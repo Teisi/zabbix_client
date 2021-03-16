@@ -38,7 +38,12 @@ class GetExtensionList implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        $locations = explode(',', $parameter['scopes']);
+        if(empty($parameter['scopes'])) {
+            $locations = $this->scopes;
+        } else {
+            $locations = explode(',', $parameter['scopes']);
+        }
+
         if (is_array($locations) && count($locations) > 0) {
             $extensionList = [];
             foreach ($locations as $scope) {
