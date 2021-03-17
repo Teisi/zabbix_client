@@ -14,7 +14,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use WapplerSystems\ZabbixClient\OperationResult;
@@ -25,7 +24,59 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
 
     public function execute($parameter = [])
     {
+        // Should be the extensionmanager repository used?
+        $useExtensionListRepo = empty((bool)$parameter['extensionlist']) ? false : true;
 
+        if ($useExtensionListRepo) {
+            $result = $this->getExtensionListLastUpdate();
+
+            if(!empty($result)) {
+                return new OperationResult(true, (int)$result);
+            }
+
+            return new OperationResult(true, 0);
+        }
+
+        if (!ExtensionManagementUtility::isLoaded('scheduler')) {
+            return new OperationResult(true, 0);
+        }
+
+        // @TODO: review if this is maybe deprectated?
+        return $this->getExtensionListLastUpdateScheduler();
+    }
+
+    /**
+     * getExtensionListLastUpdate()
+     * Get last extension list update from extensionmanager repository database table
+     *
+     * @return int
+     */
+    public function getExtensionListLastUpdate()
+    {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_extensionmanager_domain_model_repository');
+        $queryBuilder->getRestrictions()->removeAll();
+        $result = $queryBuilder->select('last_update')
+            ->from('tx_extensionmanager_domain_model_repository')
+            ->execute()->fetch();
+
+        if(!empty($result) && is_array($result)) {
+            return $result['last_update'];
+        }
+
+        return 0;
+    }
+
+    /**
+     * getExtensionListLastUpdateScheduler()
+     * Get last extension list update of the scheduler task
+     * @TODO: review if this method can be deleted/mark as depricated
+     *
+     * @return void
+     */
+    public function getExtensionListLastUpdateScheduler()
+    {
         if (!ExtensionManagementUtility::isLoaded('scheduler')) {
             return new OperationResult(true, 0);
         }
@@ -68,5 +119,4 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
 
         return new OperationResult(true, 0);
     }
-
 }
