@@ -29,6 +29,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zabbix_client']['operations'] = array_me
     'HasRemainingUpdates' => \WapplerSystems\ZabbixClient\Operation\HasRemainingUpdates::class,
     'GetZabbixLogFileSize' => \WapplerSystems\ZabbixClient\Operation\GetZabbixLogFileSize::class,
     'HasExtensionUpdate' => \WapplerSystems\ZabbixClient\Operation\HasExtensionUpdate::class,
+    'HasExtensionUpdateList' => \WapplerSystems\ZabbixClient\Operation\HasExtensionUpdateList::class,
     'GetProgramVersion' => \WapplerSystems\ZabbixClient\Operation\GetProgramVersion::class,
     'GetFeatureValue' => \WapplerSystems\ZabbixClient\Operation\GetFeatureValue::class,
     'GetOpCacheStatus' => \WapplerSystems\ZabbixClient\Operation\GetOpCacheStatus::class,
