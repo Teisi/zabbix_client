@@ -1,3 +1,5 @@
+# cat=basic/enable; type=options[default (unsecure)=0,simple header=1]; label=API access method
+accessMethod = 0
 
 # cat=basic/enable; type=string; label=API Key:Allowed characters: 0-9 a-z A-Z
 apiKey =

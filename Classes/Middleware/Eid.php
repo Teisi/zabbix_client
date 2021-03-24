@@ -21,7 +21,7 @@ use WapplerSystems\ZabbixClient\Response\JsonResponse;
 use WapplerSystems\ZabbixClient\Exception\InvalidOperationException;
 use WapplerSystems\ZabbixClient\Authorization\IpAuthorizationProvider;
 use WapplerSystems\ZabbixClient\Authentication\KeyAuthenticationProvider;
-
+use WapplerSystems\ZabbixClient\Utility\Configuration;
 
 class Eid
 {
@@ -35,18 +35,35 @@ class Eid
         $ip = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $ipAuthorizationProvider = new IpAuthorizationProvider();
         if (!$ipAuthorizationProvider->isAuthorized($ip)) {
+            if($ipAuthorizationProvider->blockedIp($ip)) {
+                $logger->error('Too many wrong requests', ['ip' => $_SERVER['REMOTE_ADDR']]);
+                return $response->withStatus(429, 'Too many wrong requests');
+            }
+
             return $response->withStatus(403, 'Not allowed');
         }
 
-        $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? null;
+        $config = Configuration::getExtConfiguration();
+        $accessMethod = $config['accessMethod'];
+
+        switch (intval($accessMethod)) {
+            case 1:
+                $key = $request->getHeaders()['api-key'][0];
+                break;
+
+            default:
+                $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? null;
+                break;
+        }
+
         $keyAuthenticationProvider = new KeyAuthenticationProvider();
         if (!$keyAuthenticationProvider->hasValidKey($key)) {
+            if($ipAuthorizationProvider->blockedIp($ip)) {
+                $logger->error('Too many wrong requests', ['ip' => $_SERVER['REMOTE_ADDR']]);
+                return $response->withStatus(429, 'Too many wrong requests');
+            }
 
-            /** @var $logger Logger */
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->error('API key wrong', ['ip' => $_SERVER['REMOTE_ADDR']]);
-
-
             return $response->withStatus(403, 'API key wrong');
         }
 

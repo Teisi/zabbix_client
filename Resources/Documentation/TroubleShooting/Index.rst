@@ -22,6 +22,5 @@ For TYPO3 systems < 9:
 
 ``https://<domain>/index.php?eID=zabbixclient&key=<your-key>&operation=GetTYPO3Version``
 
-and / or
 
-Check the extension (zabbix_client) setting: "accessMethod"
+

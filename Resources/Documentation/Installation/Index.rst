@@ -50,9 +50,6 @@ Client setup
 1. Install the extension
 
 2. Extension setup
-    Choose the api-key transfer method:
-        0. default - currently needed for the zabbix-server, see "Zabbix setup" (api-key as url parameter)
-        1. better security - the api-key has to be at the request header e. g. api-key = YourAPIKey
 
     Set a key in the extension settings
 

@@ -24,10 +24,11 @@ use WapplerSystems\ZabbixClient\ManagerFactory;
 use WapplerSystems\ZabbixClient\Exception\InvalidOperationException;
 use WapplerSystems\ZabbixClient\Authorization\IpAuthorizationProvider;
 use WapplerSystems\ZabbixClient\Authentication\KeyAuthenticationProvider;
-
+use WapplerSystems\ZabbixClient\Utility\Configuration;
 
 class ZabbixClient implements MiddlewareInterface
 {
+
     /**
      * Calls the "unavailableAction" of the error controller if the system is in maintenance mode.
      * This only applies if the REMOTE_ADDR does not match the devIpMask
@@ -38,7 +39,6 @@ class ZabbixClient implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-
         /** @var \Psr\Http\Message\UriInterface $requestedUri */
         $requestedUri = $request->getUri();
         if (strpos($requestedUri->getPath(), '/zabbixclient/') === 0) {
@@ -52,23 +52,41 @@ class ZabbixClient implements MiddlewareInterface
     {
         /** @var Response $response */
         $response = GeneralUtility::makeInstance(Response::class);
+        /** @var $logger Logger */
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $ip = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $ipAuthorizationProvider = new IpAuthorizationProvider();
         if (!$ipAuthorizationProvider->isAuthorized($ip)) {
+            if($ipAuthorizationProvider->blockedIp($ip)) {
+                $logger->error('Too many wrong requests', ['ip' => $_SERVER['REMOTE_ADDR']]);
+                return $response->withStatus(429, 'Too many wrong requests');
+            }
+
             return $response->withStatus(403, 'Not allowed');
         }
 
-        $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? null;
+        $config = Configuration::getExtConfiguration();
+        $accessMethod = $config['accessMethod'];
+
+        switch (intval($accessMethod)) {
+            case 1:
+                $key = $request->getHeaders()['api-key'][0];
+                break;
+
+            default:
+                $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? null;
+                break;
+        }
+
         $keyAuthenticationProvider = new KeyAuthenticationProvider();
         if (!$keyAuthenticationProvider->hasValidKey($key)) {
-            /** @var Response $response */
-            $response = GeneralUtility::makeInstance(Response::class);
+            if($ipAuthorizationProvider->blockedIp($ip)) {
+                $logger->error('Too many wrong requests', ['ip' => $_SERVER['REMOTE_ADDR']]);
+                return $response->withStatus(429, 'Too many wrong requests');
+            }
 
-            /** @var $logger Logger */
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->error('API key wrong', ['ip' => $_SERVER['REMOTE_ADDR']]);
-
             return $response->withStatus(403, 'API key wrong');
         }
 

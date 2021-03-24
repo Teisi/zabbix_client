@@ -24,6 +24,4 @@ class KeyAuthenticationProvider
         $config = Configuration::getExtConfiguration();
         return trim($config['apiKey']) === trim($key);
     }
-
-
 }

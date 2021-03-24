@@ -24,7 +24,6 @@ class GetTYPO3Version implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
         return new OperationResult(true, TYPO3_version);
     }
 }
