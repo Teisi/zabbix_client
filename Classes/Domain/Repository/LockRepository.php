@@ -22,4 +22,50 @@ class LockRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     protected $defaultOrderings = [
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     ];
+
+    /**
+     * findLast
+     * returns last $count lock records
+     *
+     * @param integer $count - how many rows to return
+     * @return array
+     */
+    public function findLast(int $count = 10)
+    {
+        // Method with count-subquery maybe slower
+        // $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        //     ->getConnectionForTable('tx_zabbixclient_domain_model_lock');
+        // $queryBuilder = $connection->createQueryBuilder();
+        // $queryBuilderCount = $connection->createQueryBuilder();
+        // $countRows = $queryBuilderCount
+        //     ->count('uid')
+        //     ->from('tx_zabbixclient_domain_model_lock')
+        //     ->execute()->fetchColumn(0);
+
+        // $queryBuilder
+        //     ->select('*')
+        //     ->from('tx_zabbixclient_domain_model_lock');
+
+        // if($countRows > $count) {
+        //     $queryBuilder
+        //         ->setMaxResults($count)
+        //         ->setFirstResult($countRows - $count);
+        // }
+
+        // $rows = $queryBuilder->execute()->fetchAll();
+
+        // return $rows;
+
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_zabbixclient_domain_model_lock');
+        $queryBuilder = $connection->createQueryBuilder();
+        $rows = $queryBuilder
+            ->select('*')
+            ->from('tx_zabbixclient_domain_model_lock')
+            ->orderBy('tstamp', 'DESC')
+            ->addOrderBy('uid', 'DESC')
+            ->setMaxResults($count)
+            ->execute()->fetchAll();
+        return $rows;
+    }
 }
