@@ -23,6 +23,15 @@ class LockRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     ];
 
+    // Class Initialization (after all dependencies have been injected) (similar to __construct)
+    public function initializeObject() {
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
+        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings->setRespectStoragePage(FALSE);
+        $querySettings->setRespectSysLanguage(FALSE);
+        $this->setDefaultQuerySettings($querySettings);
+    }
+
     /**
      * findLast
      * returns last $count lock records
@@ -67,5 +76,25 @@ class LockRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             ->setMaxResults($count)
             ->execute()->fetchAll();
         return $rows;
+    }
+
+    /**
+     * deleteLocks
+     * delte entries which are older then $time
+     *
+     * @param integer $time
+     * @return int
+     */
+    public function deleteLocks(int $time = 10)
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_zabbixclient_domain_model_lock');
+        $queryBuilder = $connection->createQueryBuilder();
+        $count = $queryBuilder
+            ->delete('tx_zabbixclient_domain_model_lock')
+            ->where('tstamp < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$time.' DAY))')
+            ->execute();
+
+        return $count;
     }
 }
