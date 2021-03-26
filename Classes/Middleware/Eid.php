@@ -10,9 +10,6 @@ namespace WapplerSystems\ZabbixClient\Middleware;
  * LICENSE.txt file that was distributed with this source code.
  */
 
-
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
