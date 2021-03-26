@@ -4,3 +4,7 @@
 .php_cs.cache
 composer.lock
 Documentation-GENERATED-temp
+
+### VS Code
+*.code-workspace
+.vscode/
