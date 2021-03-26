@@ -13,6 +13,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WapplerSystems\ZabbixClient\OperationResult;
+use WapplerSystems\ZabbixClient\Utility\FormatUtility;
 
 
 class GetLastSchedulerRun implements IOperation, SingletonInterface
@@ -24,8 +25,11 @@ class GetLastSchedulerRun implements IOperation, SingletonInterface
         $registry = GeneralUtility::makeInstance(Registry::class);
 
         $lastRun = $registry->get('tx_scheduler', 'lastRun', []);
+
         if (isset($lastRun['end'])) {
-            return new OperationResult(true, (int)$lastRun['end']);
+            $returnValue = empty($parameter['format']) ? $lastRun['end'] : FormatUtility::formatDateTime($lastRun['end'], $parameter['format']);
+
+            return new OperationResult(true, $returnValue);
         }
         return new OperationResult(true, 0);
     }

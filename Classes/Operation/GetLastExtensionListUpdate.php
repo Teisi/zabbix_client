@@ -17,6 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Task\UpdateExtensionListTask;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use WapplerSystems\ZabbixClient\OperationResult;
+use WapplerSystems\ZabbixClient\Utility\FormatUtility;
 
 
 class GetLastExtensionListUpdate implements IOperation, SingletonInterface
@@ -29,20 +30,27 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
 
         if ($useExtensionListRepo) {
             $result = $this->getExtensionListLastUpdate();
-
-            if(!empty($result)) {
-                return new OperationResult(true, (int)$result);
+            if(empty($result)) {
+                return new OperationResult(true, 0);
             }
 
-            return new OperationResult(true, 0);
+            if(!empty($parameter['format'])) {
+                return new OperationResult(true, FormatUtility::formatDateTime($result, $parameter['format']));
+            }
+
+            return new OperationResult(true, (int)$result);
         }
 
         if (!ExtensionManagementUtility::isLoaded('scheduler')) {
             return new OperationResult(true, 0);
         }
 
-        // @TODO: review if this is maybe deprectated?
-        return $this->getExtensionListLastUpdateScheduler();
+        // @TODO: review if this is maybe deprectated? (getExtensionListLastUpdateScheduler())
+        if(!empty($parameter['format'])) {
+            return new OperationResult(true, FormatUtility::formatDateTime($this->getExtensionListLastUpdateScheduler(), $parameter['format']));
+        }
+
+        return new OperationResult(true, $this->getExtensionListLastUpdateScheduler());
     }
 
     /**
@@ -78,7 +86,7 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
     public function getExtensionListLastUpdateScheduler()
     {
         if (!ExtensionManagementUtility::isLoaded('scheduler')) {
-            return new OperationResult(true, 0);
+            return 0;
         }
 
         /** @var QueryBuilder $queryBuilder */
@@ -112,11 +120,11 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
             $taskObj = unserialize($task['serialized_task_object'], [AbstractTask::class]);
             if (get_class($taskObj) === UpdateExtensionListTask::class) {
                 if (!empty($task['lastexecution_time'])) {
-                    return new OperationResult(true, (int)$task['lastexecution_time']);
+                    return (int)$task['lastexecution_time'];
                 }
             }
         }
 
-        return new OperationResult(true, 0);
+        return 0;
     }
 }

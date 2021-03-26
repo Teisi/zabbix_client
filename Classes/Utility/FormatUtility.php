@@ -35,7 +35,7 @@ class FormatUtility {
      * @return string
      */
     public static function formatDateTime(int $timestamp, string $format = 'd M Y H:i:s') {
-        $allowedFormat = ['d M Y H:i:s', 'c', 'r'];
+        $allowedFormat = ['d M Y H:i:s', 'd M Y', 'H:i:s', 'c', 'r'];
         if(in_array($format, $allowedFormat)) {
             $formatTime = $format;
 
