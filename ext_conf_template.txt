@@ -1,8 +1,11 @@
+# cat=basic/enable; type=string; label=API Key:Allowed characters: 0-9 a-z A-Z
+apiKey =
+
 # cat=basic/enable; type=options[default (unsecure)=0,simple header=1]; label=API access method
 accessMethod = 0
 
-# cat=basic/enable; type=string; label=API Key:Allowed characters: 0-9 a-z A-Z
-apiKey =
+# cat=basic/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method
+httpMethod = GET-POST
 
 # cat=basic/enable; type=string; label=Allowed IPs:Restrict the endpoint to specific IPs. Comma separated lists are possible.
 allowedIps = *
