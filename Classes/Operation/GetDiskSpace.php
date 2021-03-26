@@ -29,9 +29,17 @@ class GetDiskSpace implements IOperation, SingletonInterface
     {
         $path = !empty($parameter['path']) ? $parameter['path'] : '/';
 
+        if((bool)$parameter['format'] === true) {
+            $total = \WapplerSystems\ZabbixClient\Utility\FormatUtility::formatBytes(disk_total_space($path));
+            $free = \WapplerSystems\ZabbixClient\Utility\FormatUtility::formatBytes(disk_free_space($path));
+        } else {
+            $total = disk_total_space($path);
+            $free = disk_free_space($path);
+        }
+
         return new OperationResult(true, [
-            'total' => disk_total_space($path),
-            'free' => disk_free_space($path),
+            'total' => $total,
+            'free' => $free,
         ]);
     }
 }
