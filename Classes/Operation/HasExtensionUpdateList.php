@@ -45,9 +45,8 @@ class HasExtensionUpdateList implements IOperation, SingletonInterface
             ) {
                 /** @var Extension $terObject */
                 $terObject = $information['terObject'];
-                $insecureStatus = $terObject->getReviewState();
 
-                if (!$terObject->getCurrentVersion()) {
+                if ($information['updateAvailable'] == true && !$terObject->getCurrentVersion()) {
                     if (
                         array_key_exists('installed', $information)
                         && $information['installed'] === true
