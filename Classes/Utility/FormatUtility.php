@@ -26,4 +26,22 @@ class FormatUtility {
 
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
+
+    /**
+     * formatDateTime
+     *
+     * @param integer $timestamp
+     * @param string $format
+     * @return string
+     */
+    public static function formatDateTime(int $timestamp, string $format = 'd M Y H:i:s') {
+        $allowedFormat = ['d M Y H:i:s', 'c', 'r'];
+        if(in_array($format, $allowedFormat)) {
+            $formatTime = $format;
+
+            return date($formatTime, $timestamp);
+        }
+
+        return strval($timestamp);
+    }
 }
