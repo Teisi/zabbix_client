@@ -32,6 +32,15 @@ class Eid
      */
     public function processRequest(ServerRequestInterface $request, \TYPO3\CMS\Core\Http\Response $response)
     {
+        $config = Configuration::getExtConfiguration();
+
+        // Check allowed HTTP-Method
+        $allowedHttpMethods = explode('-', $config['httpMethod']);
+        if(!in_array($request->getMethod(), $allowedHttpMethods)) {
+            $logger->error('Not allowed HTTP-method', ['ip' => $_SERVER['REMOTE_ADDR']]);
+            return $response->withStatus(405, 'Not allowed HTTP-method');
+        }
+
         $ip = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $ipAuthorizationProvider = new IpAuthorizationProvider();
         if (!$ipAuthorizationProvider->isAuthorized($ip)) {
@@ -43,9 +52,8 @@ class Eid
             return $response->withStatus(403, 'Not allowed');
         }
 
-        $config = Configuration::getExtConfiguration();
-        $accessMethod = $config['accessMethod'];
 
+        $accessMethod = $config['accessMethod'];
         switch (intval($accessMethod)) {
             case 1:
                 $key = $request->getHeaders()['api-key'][0];
