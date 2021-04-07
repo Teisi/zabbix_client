@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace WapplerSystems\ZabbixClient\ViewHelpers;
 
 // use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use \TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use \TYPO3\CMS\Core\ViewHelpers\Form\TypoScriptConstantsViewHelper;
 
 class StringViewHelper extends AbstractViewHelper {
 
@@ -15,10 +13,10 @@ class StringViewHelper extends AbstractViewHelper {
      * apiKey
      *
      * @param array $config
-     * @param \TYPO3\CMS\Core\ViewHelpers\Form\TypoScriptConstantsViewHelper $const
+     * @param TypoScriptConstantsViewHelper $const
      * @return string
      */
-    public function apiKey(array $config, \TYPO3\CMS\Core\ViewHelpers\Form\TypoScriptConstantsViewHelper $const)
+    public function apiKey(array $config, TypoScriptConstantsViewHelper $const)
     {
         return '
             <input type="text"
