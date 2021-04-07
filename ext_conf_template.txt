@@ -1,4 +1,4 @@
-# cat=basic/enable; type=string; label=API Key:Allowed characters: 0-9 a-z A-Z
+# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\StringViewHelper->apiKey]; blubb=test; label=API Key:Allowed characters: 0-9 a-z A-Z
 apiKey =
 
 # cat=basic/enable; type=options[default (unsecure)=0,simple header=1]; label=API access method
