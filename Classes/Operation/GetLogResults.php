@@ -23,7 +23,6 @@ use WapplerSystems\ZabbixClient\OperationResult;
 class GetLogResults implements IOperation, SingletonInterface
 {
 
-
     /**
      * @var array
      */
@@ -53,42 +52,58 @@ class GetLogResults implements IOperation, SingletonInterface
     {
 
         $filter = $parameter['filter'];
+        // how many entries should be returned. Has to be > 0
+        $maxResults = intval($parameter['max']);
 
         $type = -1;
         $error = -1;
         $detailsFilter = null;
         $detailsExcludeFilter = null;
-        switch ($filter) {
-            case 'ServiceUnavailableException':
+        switch (strtolower($filter)) {
+            case 'serviceunavailableexception':
                 $type = 5;
                 $error = 2;
                 $detailsFilter = 'ServiceUnavailableException';
                 break;
-            case 'PageNotFoundException':
+            case 'pagenotfoundexception':
                 $type = 5;
                 $error = 2;
                 $detailsFilter = 'PageNotFoundException';
                 break;
-            case 'OtherExceptions':
+            case 'otherexceptions':
                 $type = 5;
                 $error = 2;
                 $detailsExcludeFilter = ['ServiceUnavailableException', 'PageNotFoundException'];
                 break;
-            case 'FailedLogins':
+            case 'failedlogins':
                 $type = 255;
                 $error = 3;
+                break;
+            case 'error':
+                $error = 2;
                 break;
         }
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ObjectManager::class)->get(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
         $queryBuilder->resetRestrictions();
-        $queryBuilder->select('uid')->from('sys_log')->where(
-            $queryBuilder->expr()->eq(
-                'error',
-                $error
-            )
-        );
+
+        if($maxResults > 0) {
+            $queryBuilder
+                ->select('uid', 'tstamp', 'details', 'IP')
+                ->setMaxResults($maxResults);
+        } else {
+            $queryBuilder->select('uid');
+        }
+
+        $queryBuilder
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'error',
+                    $error
+                )
+            );
         if ($type !== -1) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq(
                 'type',
@@ -110,8 +125,12 @@ class GetLogResults implements IOperation, SingletonInterface
             }
         }
 
-        $logCount = $queryBuilder->execute()->rowCount();
+        if($maxResults > 0) {
+            $log = $queryBuilder->execute()->fetchAll();
+        } else {
+            $log = $queryBuilder->execute()->rowCount();
+        }
 
-        return new OperationResult(true, $logCount);
+        return new OperationResult(true, $log);
     }
 }
