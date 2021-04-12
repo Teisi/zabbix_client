@@ -1,7 +1,7 @@
-# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\StringViewHelper->apiKey]; blubb=test; label=API Key:Allowed characters: 0-9 a-z A-Z
+# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\StringViewHelper->apiKey]; label=API Key:Allowed characters: 0-9 a-z A-Z
 apiKey =
 
-# cat=basic/enable; type=options[default (unsecure)=0,simple header=1]; label=API access method
+# cat=basic/enable; type=options[default (unsecure)=0,request header=1]; label=API access method (where the api-key is located)
 accessMethod = 0
 
 # cat=basic/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method
