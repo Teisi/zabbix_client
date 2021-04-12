@@ -12,9 +12,9 @@ namespace WapplerSystems\ZabbixClient\Operation;
 use TYPO3\CMS\Core\SingletonInterface;
 use WapplerSystems\ZabbixClient\OperationResult;
 
-
 /**
  * A Operation which returns the current TYPO3 version
+ * @todo TYPO3 12 - remove unnecessary code if TYPO3 version 12 is available
  */
 class GetTYPO3Version implements IOperation, SingletonInterface
 {
@@ -24,6 +24,15 @@ class GetTYPO3Version implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        return new OperationResult(true, TYPO3_version);
+        // @deprecated will work with TYPO3 10 and 11 "TYPO3_version"
+        // @see https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.3/Deprecation-90007-GlobalConstantsTYPO3_versionAndTYPO3_branch.html
+        if (!defined('TYPO3_version')) {
+            $typo3version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+            $version = $typo3version->getVersion();
+        } else {
+            $version = TYPO3_version;
+        }
+
+        return new OperationResult(true, $version);
     }
 }
