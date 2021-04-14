@@ -12,6 +12,7 @@ namespace WapplerSystems\ZabbixClient\Authorization;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WapplerSystems\ZabbixClient\Utility\Configuration;
 
+
 class IpAuthorizationProvider
 {
 

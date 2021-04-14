@@ -3,25 +3,23 @@ declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Command;
 
+/**
+ * This file is part of the "zabbix_client" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ */
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use WapplerSystems\ZabbixClient\Domain\Repository\LockRepository;
+
 
 class LockCommand extends Command {
-
-    /**
-     * @var \WapplerSystems\ZabbixClient\Domain\Repository\LockRepository
-     */
-    private $lockRepository = null;
 
     /**
      * Configure the command by defining the name, options and arguments
