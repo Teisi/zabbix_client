@@ -1,5 +1,5 @@
 <?php
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['zabbix_client'] = [
     'title' => 'Zabbix Client',
     'description' => 'Client for zabbix monitoring system. Secure up your TYPO3 Systems and detect errors and performance killers.',
     'category' => 'misc',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '0.2.9',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-10.4.99',
+            'typo3' => '10.4.0-10.4.99',
         ],
         'conflicts' => [
         ],
