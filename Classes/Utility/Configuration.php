@@ -16,7 +16,7 @@ class Configuration
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
 
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(ExtensionConfiguration::class)
+            return GeneralUtility::makeInstance(ExtensionConfiguration::class)
                 ->get('zabbix_client');
         }
 
@@ -45,4 +45,17 @@ class Configuration
         );
     }
 
+    /**
+     * setExtConfiguration
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public static function setExtConfiguration(string $key, $value): void
+    {
+        $config = self::getExtConfiguration();
+        $config[$key] = $value;
+        GeneralUtility::makeInstance(ExtensionConfiguration::class)->set('zabbix_client', '', $config);
+    }
 }

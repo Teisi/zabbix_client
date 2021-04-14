@@ -1,5 +1,8 @@
-# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\StringViewHelper->apiKey]; label=API Key:Allowed characters: 0-9 a-z A-Z
+# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\ApiKeyViewHelper->apiKey]; label=API Key:Allowed characters: 0-9 a-z A-Z
 apiKey =
+
+# cat=basic/enable; type=boolean; label=True if you have the api-key hashed (with the button above)
+apiKeyHashed = false
 
 # cat=basic/enable; type=options[default (unsecure)=0,request header=1]; label=API access method (where the api-key is located)
 accessMethod = 0

@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WapplerSystems\ZabbixClient\OperationResult;
 
-
 class GetApplicationContext implements IOperation, SingletonInterface
 {
     /**
@@ -23,15 +22,6 @@ class GetApplicationContext implements IOperation, SingletonInterface
     public function execute($parameter = [])
     {
         $applicationContext = GeneralUtility::getApplicationContext();
-        if ($applicationContext->isDevelopment()) {
-            return new OperationResult(true, 'Development');
-        }
-        if ($applicationContext->isTesting()) {
-            return new OperationResult(true, 'Testing');
-        }
-        if ($applicationContext->isProduction()) {
-            return new OperationResult(true, 'Production');
-        }
-        return new OperationResult(true, '');
+        return new OperationResult(true, $applicationContext->__toString());
     }
 }
