@@ -4,10 +4,10 @@ apiKey =
 # cat=basic/enable; type=boolean; label=True if you have the api-key hashed (with the button above)
 apiKeyHashed = false
 
-# cat=basic/enable; type=options[default (unsecure)=0,request header=1]; label=API access method (where the api-key is located)
+# cat=basic/enable; type=options[default URL paramter (unsecure)=0,request header=1]; label=API access method (where the api-key is located)
 accessMethod = 0
 
-# cat=basic/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method
+# cat=basic/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method (GET / POST)
 httpMethod = GET-POST
 
 # cat=basic/enable; type=string; label=Allowed IPs:Restrict the endpoint to specific IPs. Comma separated lists are possible.
