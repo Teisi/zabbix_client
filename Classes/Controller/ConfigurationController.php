@@ -39,7 +39,8 @@ class ConfigurationController
             throw new \InvalidArgumentException('Input does not correspond to the required format', 1580585107);
         }
 
-        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+        $mode = 'BE';
+        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance($mode);
         $hashedPassword = $hashInstance->getHashedPassword($input);
 
         Configuration::setExtConfiguration('apiKeyHashed', true);
