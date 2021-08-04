@@ -25,8 +25,6 @@ class ApiKeyViewHelper extends AbstractViewHelper {
      */
     public function apiKey(array $config, TypoScriptConstantsViewHelper $const)
     {
-
-        // @todo @bugfix input pattern if api-key is hashed...
         return '
             <input type="text"
                 id="em-'.$const->arguments['configuration']['extensionKey'].'-'.$config['fieldName'].'"

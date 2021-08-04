@@ -38,6 +38,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zabbix_client']['operations'] = array_me
     'GetZabbixClientLock' => \WapplerSystems\ZabbixClient\Operation\GetZabbixClientLock::class,
     'GetDatabaseAnalyzerSummary' => \WapplerSystems\ZabbixClient\Operation\GetDatabaseAnalyzerSummary::class,
     'HasFailedSchedulerTask' => \WapplerSystems\ZabbixClient\Operation\HasFailedSchedulerTask::class,
+    'GetSystemInfos' => \WapplerSystems\ZabbixClient\Operation\GetSystemInfos::class,
     'GetZabbixFeLog' => \WapplerSystems\ZabbixClient\Operation\GetZabbixFeLog::class,
 ]);
 

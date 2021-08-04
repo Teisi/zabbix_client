@@ -11,6 +11,7 @@ namespace WapplerSystems\ZabbixClient\Operation;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WapplerSystems\ZabbixClient\OperationResult;
 
 
@@ -44,16 +45,22 @@ class GetExtensionList implements IOperation, SingletonInterface
             $locations = explode(',', $parameter['scopes']);
         }
 
+        $withUpdateInfo = false;
+        if($parameter['withUpdateInfo'] === '1') {
+            $withUpdateInfo = true;
+        }
+
         if (is_array($locations) && count($locations) > 0) {
             $extensionList = [];
             foreach ($locations as $scope) {
                 if (in_array($scope, $this->scopes)) {
-                    $extensionList = array_merge($extensionList, $this->getExtensionListForScope($scope));
+                    $extensionList = array_merge($extensionList, $this->getExtensionListForScope($scope, $withUpdateInfo));
                 }
             }
 
             return new OperationResult(true, $extensionList);
         }
+
         return new OperationResult(false, 'No extension locations given');
     }
 
@@ -92,7 +99,7 @@ class GetExtensionList implements IOperation, SingletonInterface
      * @param string $scope
      * @return array
      */
-    protected function getExtensionListForScope($scope)
+    protected function getExtensionListForScope($scope, $withUpdateInfo = false)
     {
         $path = $this->getPathForScope($scope);
         $extensionInfo = [];
@@ -114,6 +121,11 @@ class GetExtensionList implements IOperation, SingletonInterface
                     if ($extensionVersion) {
                         $extensionInfo[$extKey]['version'] = $extensionVersion;
                         $extensionInfo[$extKey]['scope'][$scope] = $extensionVersion;
+                    }
+
+                    if($withUpdateInfo) {
+                        $hasExtensionUpdate = GeneralUtility::makeInstance('WapplerSystems\\ZabbixClient\\Operation\\HasExtensionUpdate');
+                        $extensionInfo[$extKey]['hasExtensionUpdate'] = $hasExtensionUpdate->execute(['extensionKey' => $extKey])->toArray();
                     }
                 }
             }
