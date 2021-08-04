@@ -38,6 +38,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zabbix_client']['operations'] = array_me
     'GetZabbixClientLock' => \WapplerSystems\ZabbixClient\Operation\GetZabbixClientLock::class,
     'GetDatabaseAnalyzerSummary' => \WapplerSystems\ZabbixClient\Operation\GetDatabaseAnalyzerSummary::class,
     'HasFailedSchedulerTask' => \WapplerSystems\ZabbixClient\Operation\HasFailedSchedulerTask::class,
+    'GetZabbixFeLog' => \WapplerSystems\ZabbixClient\Operation\GetZabbixFeLog::class,
 ]);
 
 if (version_compare(TYPO3_version, '9.0.0', '>=')) {
@@ -61,4 +62,12 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['WapplerSystems']['ZabbixClient']['Middleware
 
 if (version_compare(TYPO3_version, '9.0.0', '<') && version_compare(TYPO3_version, '7.4.0', '>=')) {
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['zabbixclient'] = \WapplerSystems\ZabbixClient\Middleware\Eid::class . '::processRequest';
+}
+
+// Register sys_log and sys_history table in table garbage collection task
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_zabbixclient_domain_model_felog'] ?? false)) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_zabbixclient_domain_model_felog'] = [
+        'dateField' => 'tstamp',
+        'expirePeriod' => 60
+    ];
 }
