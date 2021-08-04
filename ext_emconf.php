@@ -18,10 +18,10 @@ $EM_CONF['zabbix_client'] = [
     'clearCacheOnLoad' => 0,
     'lockType' => '',
     'author_company' => 'WapplerSystems',
-    'version' => '0.2.9',
+    'version' => '0.2.11',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-10.4.99',
+            'typo3' => '8.7.0-11.5.99',
         ],
         'conflicts' => [
         ],
@@ -33,5 +33,4 @@ $EM_CONF['zabbix_client'] = [
             'Classes',
         ],
     ],
-    '_md5_values_when_last_written' => '',
 ];
