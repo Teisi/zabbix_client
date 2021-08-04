@@ -10,6 +10,7 @@ namespace WapplerSystems\ZabbixClient\Middleware;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+// use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -73,6 +74,11 @@ class Eid
         }
 
         $operation = $request->getParsedBody()['operation'] ?? $request->getQueryParams()['operation'] ?? null;
+        // $operation has to be allowed at: Typo3 extension manager gearwheel icon (ext_conf_template.txt)
+        if(!in_array($operation, $config['operations']) && intval($config['operations'][$operation]) !== 1) {
+            return $response->withStatus(403, 'operation not allowed');
+        }
+
         $params = array_merge($request->getParsedBody() ?? [], $request->getQueryParams() ?? []);
 
         $managerFactory = ManagerFactory::getInstance();

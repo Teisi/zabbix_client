@@ -29,11 +29,6 @@ class ManagerFactory
     protected $operationManager;
 
     /**
-     * @var array
-     */
-    private $extConf;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -50,6 +45,7 @@ class ManagerFactory
         if (self::$instance === null) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -69,6 +65,7 @@ class ManagerFactory
                     } elseif ($operationRef instanceof IOperation) {
                         $operation = $operationRef;
                     }
+
                     // TODO log error if some strange value is registered
 
                     $this->operationManager->registerOperation($key, $operation);

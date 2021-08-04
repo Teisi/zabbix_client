@@ -10,6 +10,9 @@ accessMethod = 0
 # cat=basic/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method (GET / POST)
 httpMethod = GET-POST
 
+# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\AllowedOperationsViewHelper->select]; label=Allowed operations
+operations.allowedOperations =
+
 # cat=basic/enable; type=string; label=Allowed IPs:Restrict the endpoint to specific IPs. Comma separated lists are possible.
 allowedIps = *
 
