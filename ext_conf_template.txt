@@ -4,32 +4,32 @@ apiKey =
 # cat=basic/enable; type=boolean; label=True if you have the api-key hashed (with the button above)
 apiKeyHashed = false
 
-# cat=basic/enable; type=options[default URL paramter (unsecure)=0,request header=1]; label=API access method (where the api-key is located)
+# cat=api-access/enable; type=options[default URL paramter (unsecure)=0,request header=1]; label=API access method (where the api-key is located)
 accessMethod = 0
 
-# cat=basic/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method (GET / POST)
+# cat=api-access/enable; type=options[GET=GET,POST=POST,Both=GET-POST]; label=API access method (GET / POST)
 httpMethod = GET-POST
 
-# cat=basic/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\AllowedOperationsViewHelper->select]; label=Allowed operations
+# cat=api-access/enable; type=user[WapplerSystems\ZabbixClient\ViewHelpers\AllowedOperationsViewHelper->select]; label=Allowed operations
 operations.allowedOperations =
 
-# cat=basic/enable; type=string; label=Allowed IPs:Restrict the endpoint to specific IPs. Comma separated lists are possible.
+# cat=api-access/enable; type=string; label=Allowed IPs:Restrict the endpoint to specific IPs. Comma separated lists are possible.
 allowedIps = *
 
-# cat=basic/enable; type=string; label=Path to GraphicsMagick
+# cat=paths/enable; type=string; label=Path to GraphicsMagick
 program.gm = /usr/bin/gm
 
-# cat=basic/enable; type=string; label=Path to ImageMagick
+# cat=paths/enable; type=string; label=Path to ImageMagick
 program.im = /usr/bin/convert
 
-# cat=basic/enable; type=string; label=Path to OpenSSL
+# cat=paths/enable; type=string; label=Path to OpenSSL
 program.openssl = /usr/bin/openssl
 
-# cat=basic/enable; type=string; label=Path to OptiPNG
+# cat=paths/enable; type=string; label=Path to OptiPNG
 program.optipng = /usr/bin/optipng
 
-# cat=basic/enable; type=string; label=Path to jpegoptim
+# cat=paths/enable; type=string; label=Path to jpegoptim
 program.jpegoptim = /usr/bin/jpegoptim
 
-# cat=basic/enable; type=string; label=Path to WebP
+# cat=paths/enable; type=string; label=Path to WebP
 program.webp = /usr/bin/cwebp
