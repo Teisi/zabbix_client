@@ -97,7 +97,7 @@ class ZabbixClient implements MiddlewareInterface
 
         $operation = $request->getParsedBody()['operation'] ?? $request->getQueryParams()['operation'] ?? null;
         // $operation has to be allowed at: Typo3 extension manager gearwheel icon (ext_conf_template.txt)
-        if(!in_array($operation, $config['operations']) && intval($config['operations'][$operation]) !== 1) {
+        if(!in_array($operation, $config['operations']) && $config['operations'][$operation] !== "1") {
             return $response->withStatus(403, 'operation not allowed');
         }
 
@@ -108,10 +108,11 @@ class ZabbixClient implements MiddlewareInterface
         if ($operation !== null && $operation !== '') {
             $operationManager = $managerFactory->getOperationManager();
             try {
-                $result = $operationManager->executeOperation($operation, $params);
-            } catch (InvalidOperationException $ex){
+                $result = $operationManager->executeOperation($request, $operation, $params);
+            } catch (InvalidOperationException $ex) {
                 return $response->withStatus(404,  $ex->getMessage());
             } catch (\Exception $ex) {
+                var_dump($ex);
                 return $response->withStatus(500,  substr(strrchr(get_class($ex), "\\"), 1) . ': '. $ex->getMessage());
             }
         }

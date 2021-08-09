@@ -9,6 +9,7 @@ namespace WapplerSystems\ZabbixClient;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use WapplerSystems\ZabbixClient\Operation\IOperation;
 
 /**
@@ -43,9 +44,10 @@ interface IOperationManager
     /**
      * Execute an Operation by key with optional parameters
      *
+     * @param ServerRequestInterface $request
      * @param string $operationKey
      * @param array $parameter
      * @return OperationResult
      */
-    public function executeOperation($operationKey, $parameter = []);
+    public function executeOperation(ServerRequestInterface $request, $operationKey, $parameter = []);
 }

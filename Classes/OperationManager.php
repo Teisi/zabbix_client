@@ -9,6 +9,7 @@ namespace WapplerSystems\ZabbixClient;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WapplerSystems\ZabbixClient\Exception\InvalidOperationException;
 use WapplerSystems\ZabbixClient\Operation\IOperation;
@@ -53,18 +54,19 @@ class OperationManager implements IOperationManager
     /**
      * Execute an Operation by key with optional parameters
      *
+     * @param ServerRequestInterface $request
      * @param string $operationKey
      * @param array|null $parameter
      * @return OperationResult
      */
-    public function executeOperation($operationKey, $parameter = []) : OperationResult
+    public function executeOperation(ServerRequestInterface $request, $operationKey, $parameter = []) : OperationResult
     {
         $operation = $this->getOperation($operationKey);
         if (!$operation) {
             throw new InvalidOperationException('Operation [' . $operationKey . '] unknown');
         }
+
+        $parameter['request'] = $request;
         return $operation->execute($parameter);
     }
-
-
 }
