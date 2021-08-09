@@ -43,7 +43,7 @@ class AllowedOperationsViewHelper extends AbstractViewHelper {
                 $cleardName = substr($fileName, 0, -4);
                 $checked = '';
                 $value = '';
-                if((int)$operations[$cleardName] !== 0) {
+                if($operations[$cleardName] !== "0") {
                     $checked = 'checked';
                     $value = 1;
                 }
