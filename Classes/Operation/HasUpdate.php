@@ -9,10 +9,9 @@ namespace WapplerSystems\ZabbixClient\Operation;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+use Psr\Http\Message\RequestFactoryInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\Exception\CoreVersionServiceException;
-use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 use WapplerSystems\ZabbixClient\OperationResult;
 
 
@@ -23,29 +22,55 @@ class HasUpdate implements IOperation, SingletonInterface
 {
 
     /**
+     * @var RequestFactoryInterface
+     */
+    private RequestFactoryInterface $requestFactory;
+
+    public function __construct(RequestFactoryInterface $requestFactory) {
+        $this->requestFactory = $requestFactory;
+    }
+
+    /**
      *
      * @param array $parameter None
      * @return OperationResult
      */
     public function execute($parameter = [])
     {
+        $typo3Version = GeneralUtility::makeInstance(\WapplerSystems\ZabbixClient\Operation\GetTYPO3Version::class)->execute();
+        $currentTypo3Version = $typo3Version->getValue();
+        $currentMajorVersion = \explode('.', $currentTypo3Version)[0];
 
-        /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
-        $coreVersionService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreVersionService::class);
-
-        if (version_compare(TYPO3_version, '9.0.0', '<')) {
-            try {
-                $coreVersionService->updateVersionMatrix();
-            } catch (RemoteFetchException $e) {
-            }
-        }
+        $url = 'https://get.typo3.org/v1/api/major/'.$currentMajorVersion.'/release/latest';
+        $additionalOptions = [
+            // Additional headers for this specific request
+            'headers' => ['Cache-Control' => 'no-cache'],
+            // Additional options, see http://docs.guzzlephp.org/en/latest/request-options.html
+            'allow_redirects' => false,
+            'cookies' => false,
+        ];
 
         try {
-            return new OperationResult(true, $coreVersionService->isYoungerPatchReleaseAvailable());
-        } catch (CoreVersionServiceException $e) {
+            // Return a PSR-7 compliant response object
+            $response = $this->requestFactory->request($url, 'GET', $additionalOptions);
+            // Get the content as a string on a successful request
 
+            if ($response->getStatusCode() === 200) {
+                if (strpos($response->getHeaderLine('Content-Type'), 'application/json') === 0) {
+                    $content = json_decode($response->getBody()->getContents(), true);
+                    if(version_compare($currentTypo3Version, $content['version'])) {
+                        return new OperationResult(false, true);
+                    }
+
+                    return new OperationResult(false, false);
+                }
+            }
+        } catch (\Throwable $th) {
+            // TODO: log this
+            //throw $th;
+            return new OperationResult(false, false);
         }
 
-        return new OperationResult(false, false);
+        return new OperationResult(false, [ "success" => false, "message" => "Error retrieving the patch releases!" ]);
     }
 }
