@@ -22,19 +22,18 @@ class GetApplicationContext implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        if (version_compare(TYPO3_version, '11.0.0', '>=')) {
-            $applicationContext = Environment::getContext();
-            if ($applicationContext->isDevelopment()) {
-                return new OperationResult(true, 'Development');
-            }
-            if ($applicationContext->isTesting()) {
-                return new OperationResult(true, 'Testing');
-            }
-            if ($applicationContext->isProduction()) {
-                return new OperationResult(true, 'Production');
-            }
-            return new OperationResult(true, '');
+        if(defined(TYPO3_version)) {
+            $typo3Version = TYPO3_version;
+        } else {
+            $typo3VersionClass = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
+            $typo3Version = $typo3VersionClass->getVersion();
         }
+
+        if (version_compare($typo3Version, '9.5.0', '>=')) {
+            $applicationContext = Environment::getContext();
+            return new OperationResult(true, $applicationContext->__toString());
+        }
+
         $applicationContext = GeneralUtility::getApplicationContext();
         return new OperationResult(true, $applicationContext->__toString());
     }

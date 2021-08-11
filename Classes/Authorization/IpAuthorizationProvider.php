@@ -22,6 +22,7 @@ class IpAuthorizationProvider
      */
     public function isAuthorized($ip)
     {
+
         $config = Configuration::getExtConfiguration();
         $allowedIps = trim($config['allowedIps'] ?? '');
         return !$allowedIps || GeneralUtility::cmpIP($ip, $allowedIps);

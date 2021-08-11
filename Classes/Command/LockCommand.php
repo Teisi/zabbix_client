@@ -17,6 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use WapplerSystems\ZabbixClient\Domain\Repository\LockRepository;
 
 
 class LockCommand extends Command {
@@ -26,7 +27,7 @@ class LockCommand extends Command {
      */
     protected function configure() {
         $this
-            ->setDescription('zabbix_client lock')
+            ->setDescription('Delete old lock entries')
             ->setHelp('Usage example: php typo3 zabbix_client:lock --remove')
             ->setDefinition(
                 new InputDefinition([
@@ -48,19 +49,16 @@ class LockCommand extends Command {
 
         $removeTime = intval($input->getOption('remove'));
 
-        if($removeTime > 0) {
-            $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-            $lockRepository = $objectManager->get('WapplerSystems\\ZabbixClient\\Domain\\Repository\\LockRepository');
-            $lockEntries = $lockRepository->deleteLocks($removeTime);
-
-            $io->writeln($lockEntries.' old locks deleted! ');
-
-            return Command::SUCCESS;
+        if($removeTime <= 0) {
+            $removeTime = 30;
         }
 
-        $io->writeln('');
-        $io->error('Input value "remove" not valid! Have to be bigger than 0.');
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $lockRepository = $objectManager->get(LockRepository::class);
+        $lockEntries = $lockRepository->deleteLocks($removeTime);
 
-        return Command::FAILURE;
+        $io->writeln($lockEntries.' entries older than '.$removeTime.' days deleted!');
+
+        return Command::SUCCESS;
     }
 }
