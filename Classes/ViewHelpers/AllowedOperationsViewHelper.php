@@ -20,10 +20,10 @@ class AllowedOperationsViewHelper extends AbstractViewHelper {
      * apiKey
      *
      * @param array $config
-     * @param TypoScriptConstantsViewHelper $const
+     * @param $const
      * @return string
      */
-    public function select(array $config, TypoScriptConstantsViewHelper $const)
+    public function select(array $config, $const)
     {
         $extensionKey = 'zabbix_client';
         // Typo3 extension manager gearwheel icon (ext_conf_template.txt)
