@@ -26,7 +26,11 @@ class HasUpdate implements IOperation, SingletonInterface
      */
     private RequestFactoryInterface $requestFactory;
 
-    public function __construct(RequestFactoryInterface $requestFactory) {
+    /**
+     * @param RequestFactoryInterface $requestFactory
+     */
+    public function injectRequestFactoryInterface(RequestFactoryInterface $requestFactory)
+    {
         $this->requestFactory = $requestFactory;
     }
 

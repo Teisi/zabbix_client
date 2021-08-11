@@ -42,7 +42,6 @@ class GetLogResults implements IOperation, SingletonInterface
         30 => 'userDefined',
     ];
 
-
     /**
      *
      * @param array $parameter None
@@ -50,7 +49,6 @@ class GetLogResults implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
         $filter = $parameter['filter'];
         // how many entries should be returned. Has to be > 0
         $maxResults = intval($parameter['max']);

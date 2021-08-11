@@ -20,10 +20,10 @@ class ApiKeyViewHelper extends AbstractViewHelper {
      * apiKey
      *
      * @param array $config
-     * @param TypoScriptConstantsViewHelper $const
+     * @param $const
      * @return string
      */
-    public function apiKey(array $config, TypoScriptConstantsViewHelper $const)
+    public function apiKey(array $config, $const)
     {
         return '
             <input type="text"

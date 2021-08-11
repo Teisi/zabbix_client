@@ -22,7 +22,7 @@ class GetApplicationContext implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        if(defined(TYPO3_version)) {
+        if(!empty(TYPO3_version)) {
             $typo3Version = TYPO3_version;
         } else {
             $typo3VersionClass = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Information\Typo3Version::class);
