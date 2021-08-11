@@ -21,7 +21,7 @@ $EM_CONF['zabbix_client'] = [
     'version' => '0.2.11',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-11.5.99',
+            'typo3' => '9.5.0-11.5.99',
         ],
         'conflicts' => [
         ],
