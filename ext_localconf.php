@@ -41,7 +41,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['zabbix_client']['operations'] = array_me
     'GetSystemInfos' => \WapplerSystems\ZabbixClient\Operation\GetSystemInfos::class,
     'GetZabbixFeLog' => \WapplerSystems\ZabbixClient\Operation\GetZabbixFeLog::class,
     'HasMissingDefaultMailSettings' => \WapplerSystems\ZabbixClient\Operation\HasMissingDefaultMailSettings::class,
-    'UpdateMiniorTypo3' => \WapplerSystems\ZabbixClient\Operation\UpdateMiniorTypo3::class,
+    'UpdateMinorTypo3' => \WapplerSystems\ZabbixClient\Operation\UpdateMinorTypo3::class,
 ]);
 
 if (version_compare(TYPO3_version, '9.0.0', '>=')) {

@@ -21,7 +21,7 @@ use WapplerSystems\ZabbixClient\OperationResult;
 /**
  *
  */
-class UpdateMiniorTypo3 implements IOperation, SingletonInterface
+class UpdateMinorTypo3 implements IOperation, SingletonInterface
 {
     /**
      * @var RequestFactoryInterface
@@ -61,8 +61,8 @@ class UpdateMiniorTypo3 implements IOperation, SingletonInterface
         if($coreUpdateIsUpdateAvailable->getStatusCode() === 200) {
             $jsonResponse = json_decode($coreUpdateIsUpdateAvailable->getBody()->getContents(), true);
 
-            if($jsonResponse) {
-                if($jsonResponse['success'] && $jsonResponse['action']['action'] === 'updateRegular') {
+            if($jsonResponse['success']) {
+                if($jsonResponse['success'] && ($jsonResponse['action']['action'] === 'updateRegular' || $jsonResponse['status'][0]['title'] === 'Update available!') ) {
                     $folderStructureStatus = $this->environmentController->folderStructureGetStatusAction($this->request);
                     $folderStructureStatusContent = json_decode($folderStructureStatus->getBody()->getContents(), true);
 
