@@ -10,7 +10,7 @@ namespace WapplerSystems\ZabbixClient\Middleware;
  * LICENSE.txt file that was distributed with this source code.
  */
 
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+// use \TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -77,10 +77,12 @@ class ZabbixClient implements MiddlewareInterface
         switch (intval($accessMethod)) {
             case 1:
                 $key = $request->getHeaders()['api-key'][0];
+                $returnType = $request->getHeaders()['return-type'][0];
                 break;
 
             default:
                 $key = $request->getParsedBody()['key'] ?? $request->getQueryParams()['key'] ?? null;
+                $returnType = $request->getParsedBody()['return-type'] ?? $request->getQueryParams()['return-type'] ?? null;
                 break;
         }
 
@@ -118,7 +120,15 @@ class ZabbixClient implements MiddlewareInterface
         }
 
         if ($result !== null) {
-            return new JsonResponse($result->toArray());
+            switch ($returnType) {
+                case 'jsonArray':
+                    return new JsonResponse([$result->toArray()]);
+                    break;
+
+                default:
+                    return new JsonResponse($result->toArray());
+                    break;
+            }
         }
 
         return $response->withStatus(404, 'operation or service parameter not set');
