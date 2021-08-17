@@ -27,11 +27,18 @@ class GetLastSchedulerRun implements IOperation, SingletonInterface
         $lastRun = $registry->get('tx_scheduler', 'lastRun', []);
 
         if (isset($lastRun['end'])) {
-            $returnValue = empty($parameter['format']) ? $lastRun['end'] : FormatUtility::formatDateTime($lastRun['end'], $parameter['format']);
+            if(empty($parameter['format'])) {
+                $returnValue = $lastRun['end'];
+            } else {
+                $returnValue = FormatUtility::formatDateTime($lastRun['end'], $parameter['format']);
+                if(empty($returnValue)) {
+                    return new OperationResult(true, ['success' => false, 'error' => 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'']);
+                }
+            }
 
             return new OperationResult(true, $returnValue);
         }
+
         return new OperationResult(true, 0);
     }
-
 }

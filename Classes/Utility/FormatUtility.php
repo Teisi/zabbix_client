@@ -39,7 +39,7 @@ class FormatUtility {
      *
      * @param integer $timestamp
      * @param string $format
-     * @return string
+     * @return date
      */
     public static function formatDateTime(int $timestamp, string $format = 'd M Y H:i:s') {
         $allowedFormat = ['d M Y H:i:s', 'd M Y', 'H:i:s', 'c', 'r'];
@@ -49,6 +49,6 @@ class FormatUtility {
             return date($formatTime, $timestamp);
         }
 
-        return strval($timestamp);
+        return date('');
     }
 }

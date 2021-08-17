@@ -35,7 +35,12 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
             }
 
             if(!empty($parameter['format'])) {
-                return new OperationResult(true, FormatUtility::formatDateTime($result, $parameter['format']));
+                $formatDateTime = FormatUtility::formatDateTime($result, $parameter['format']);
+                if(empty($formatDateTime)) {
+                    return new OperationResult(true, ['success' => false, 'error' => 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'']);
+                }
+
+                return new OperationResult(true, $formatDateTime);
             }
 
             return new OperationResult(true, (int)$result);
@@ -47,7 +52,12 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
 
         // @TODO: review if this is maybe deprectated? (getExtensionListLastUpdateScheduler())
         if(!empty($parameter['format'])) {
-            return new OperationResult(true, FormatUtility::formatDateTime($this->getExtensionListLastUpdateScheduler(), $parameter['format']));
+            $formatDateTime = FormatUtility::formatDateTime($this->getExtensionListLastUpdateScheduler(), $parameter['format']);
+            if(empty($formatDateTime)) {
+                return new OperationResult(true, ['success' => false, 'error' => 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'']);
+            }
+
+            return new OperationResult(true, $formatDateTime);
         }
 
         return new OperationResult(true, $this->getExtensionListLastUpdateScheduler());
