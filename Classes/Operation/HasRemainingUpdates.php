@@ -31,10 +31,7 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
-
         if (version_compare(TYPO3_version, '9.0.0', '<')) {
-
             \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
                 ->ensureClassLoadingInformationExists()
                 ->loadTypo3LoadedExtAndExtLocalconf(false)
@@ -65,15 +62,15 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
                     $markedDoneInRegistry = $registry->get('installUpdate', $className, false);
                     if (!$markedDoneInRegistry && $updateObject->shouldRenderWizard()) {
                         // at least one wizard was found
-                        return new OperationResult(true, true);
+                        return new OperationResult(true, [true]);
                     }
                 }
 
             } catch (StatementException $exception) {
-                return new OperationResult(false, 'error 4325534583');
+                return new OperationResult(false, [$exception], 'error 4325534583');
             }
 
-            return new OperationResult(true, false);
+            return new OperationResult(true, [false]);
         }
 
         $upgradeWizardsService = GeneralUtility::makeInstance(UpgradeWizardsService::class);
@@ -84,7 +81,8 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
                 return $wizard['shouldRenderWizard'];
             }
         );
-        return new OperationResult(true, count($incompleteWizards) > 0);
+
+        return new OperationResult(true, [count($incompleteWizards) > 0]);
     }
 
 }

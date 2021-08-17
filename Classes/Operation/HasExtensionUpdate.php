@@ -32,14 +32,19 @@ class HasExtensionUpdate implements IOperation, SingletonInterface
     public function execute($parameter = [])
     {
 
-        if (!isset($parameter['extensionKey']) || $parameter['extensionKey'] === '') {
-            throw new InvalidArgumentException('no extensionKey set');
+        if (!isset($parameter['extensionKey'])) {
+            // throw new InvalidArgumentException('no extensionKey set');
+            return new OperationResult(false, [], 'Param \'extensionKey\' not set!');
+        }
+
+        if($parameter['extensionKey'] === '') {
+            return new OperationResult(false, [], 'Param \'extensionKey\' is not allowed to be empty!');
         }
 
         $extensionKey = $parameter['extensionKey'];
 
         if (!ExtensionManagementUtility::isLoaded($extensionKey)) {
-            return new OperationResult(false, 'Extension [' . $extensionKey . '] is not loaded');
+            return new OperationResult(false, [], 'Extension [' . $extensionKey . '] is not loaded');
         }
 
         /** @var ListUtility $listUtility */
@@ -47,9 +52,10 @@ class HasExtensionUpdate implements IOperation, SingletonInterface
         $extensionInformation = $listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 
         if (isset($extensionInformation[$extensionKey]['updateAvailable'])) {
-            return new OperationResult(true, (boolean)$extensionInformation[$extensionKey]['updateAvailable']);
+            return new OperationResult(true, [(boolean)$extensionInformation[$extensionKey]['updateAvailable']]);
         }
 
-        return new OperationResult(false, false);
+        // TODO: return proper error message
+        return new OperationResult(false, [], '');
     }
 }

@@ -31,7 +31,6 @@ class HasForbiddenUsers implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
         if (!isset($parameter['usernames'])) {
             throw new InvalidArgumentException('no usernames set');
         }
@@ -49,6 +48,6 @@ class HasForbiddenUsers implements IOperation, SingletonInterface
             ));
         }
 
-        return new OperationResult(true, $queryBuilder->execute()->rowCount() > 0);
+        return new OperationResult(true, [$queryBuilder->execute()->rowCount() > 0]);
     }
 }

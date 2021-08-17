@@ -28,8 +28,13 @@ class GetProgramVersion implements IOperation, SingletonInterface
     public function execute($parameter = [])
     {
 
-        if (!isset($parameter['program']) || $parameter['program'] === '') {
-            throw new InvalidArgumentException('no program set');
+        if (!isset($parameter['program'])) {
+            // throw new InvalidArgumentException('no program set');
+            return new OperationResult(false, [], 'Param \'program\' not set! Allowed values are: \'openssl, gm, im, optipng, jpegoptim, webp\'.');
+        }
+
+        if($parameter['program'] === '') {
+            return new OperationResult(false, [], 'Param \'program\' not allowed to be empty! Allowed values are: \'openssl, gm, im, optipng, jpegoptim, webp\'.');
         }
 
         $programName = $parameter['program'];
@@ -101,6 +106,9 @@ class GetProgramVersion implements IOperation, SingletonInterface
                     $firstResultLine = array_shift($executingResult);
                     return new OperationResult(true, trim($firstResultLine));
                 }
+                break;
+            default:
+                return new OperationResult(false, [], 'Param \'program\' not known ('.$parameter['program'].'). Allowed values are: \'openssl, gm, im, optipng, jpegoptim, webp\'.');
                 break;
         }
 

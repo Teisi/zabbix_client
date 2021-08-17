@@ -70,7 +70,7 @@ class GetSystemInfos implements IOperation, SingletonInterface
         $scope = empty($parameter['scope']) ? 'all' : (is_string($parameter['scope']) ? $parameter['scope'] : '');
 
         if(!in_array($scope, $this->scopes, true)) {
-            return new OperationResult(false, 'Error parameter \'scope\' empty or not valid!');
+            return new OperationResult(false, [], 'Error parameter \'scope\' empty or not valid!');
         }
 
         $resultArray = [];
@@ -102,10 +102,6 @@ class GetSystemInfos implements IOperation, SingletonInterface
             // TODO: log: methodname not available
         }
 
-        // DebuggerUtility::var_dump($resultArray);die();
-
-        return new OperationResult(true, [
-            $resultArray
-        ]);
+        return new OperationResult(true, $resultArray);
     }
 }

@@ -37,8 +37,12 @@ class GetFeatureValue implements IOperation, SingletonInterface
     public function execute($parameter = [])
     {
 
-        if (!isset($parameter['feature']) || $parameter['feature'] === '') {
-            throw new InvalidArgumentException('feature not set');
+        if (!isset($parameter['feature'])) {
+            return new OperationResult(false, [], 'Param feature not set! Allowed values are: \'cache, context, image, mail, passwordhashing\'');
+        }
+
+        if($parameter['feature'] === '') {
+            return new OperationResult(false, [], 'Param feature is empty! Allowed values are: \'cache, context, image, mail, passwordhashing\'');
         }
 
         switch (strtolower($parameter['feature'])) {
@@ -60,7 +64,7 @@ class GetFeatureValue implements IOperation, SingletonInterface
                 break;
             case 'passwordhashing':
                 if (version_compare(TYPO3_version, '9.0.0', '<')) {
-                    return new OperationResult(false, false);
+                    return new OperationResult(false, [], 'TYPO3 version to old for \'passwordhashing\'!');
                 }
                 /** @var PasswordHashingFeature $feature */
                 $feature = GeneralUtility::makeInstance(PasswordHashingFeature::class);
@@ -73,12 +77,13 @@ class GetFeatureValue implements IOperation, SingletonInterface
             /** @var AbstractPreset $preset */
             foreach ($presets as $preset) {
                 if ($preset->isActive()) {
-                    return new OperationResult(true, $preset->getName());
+                    return new OperationResult(true, [$preset->getName()]);
                 }
             }
         } catch (Exception $e) {
+            return new OperationResult(false, [], $e);
         }
 
-        return new OperationResult(true, '');
+        return new OperationResult(false);
     }
 }

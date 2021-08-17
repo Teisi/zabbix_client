@@ -28,16 +28,15 @@ class GetDatabaseVersion implements IOperation, SingletonInterface
     {
         $db = [];
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
-
             try {
                 $db[] = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getConnectionByName($connectionName)
                     ->getServerVersion();
             } catch (DBALException $e) {
+                return new OperationResult(false, [], 'Can\'t connect to DB (ConnectionPool)!');
             }
-
         }
 
-        return new OperationResult(true, $db);
+        return new OperationResult(true, [$db]);
     }
 }

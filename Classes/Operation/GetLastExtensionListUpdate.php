@@ -31,36 +31,36 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
         if ($useExtensionListRepo) {
             $result = $this->getExtensionListLastUpdate();
             if(empty($result)) {
-                return new OperationResult(true, 0);
+                return new OperationResult(true, [0]);
             }
 
             if(!empty($parameter['format'])) {
                 $formatDateTime = FormatUtility::formatDateTime($result, $parameter['format']);
                 if(empty($formatDateTime)) {
-                    return new OperationResult(true, ['success' => false, 'error' => 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'']);
+                    return new OperationResult(true, [], 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'');
                 }
 
-                return new OperationResult(true, $formatDateTime);
+                return new OperationResult(true, [$formatDateTime]);
             }
 
-            return new OperationResult(true, (int)$result);
+            return new OperationResult(true, [intval($result)]);
         }
 
         if (!ExtensionManagementUtility::isLoaded('scheduler')) {
-            return new OperationResult(true, 0);
+            return new OperationResult(true, [0]);
         }
 
         // @TODO: review if this is maybe deprectated? (getExtensionListLastUpdateScheduler())
         if(!empty($parameter['format'])) {
             $formatDateTime = FormatUtility::formatDateTime($this->getExtensionListLastUpdateScheduler(), $parameter['format']);
             if(empty($formatDateTime)) {
-                return new OperationResult(true, ['success' => false, 'error' => 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'']);
+                return new OperationResult(false, [], 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'');
             }
 
-            return new OperationResult(true, $formatDateTime);
+            return new OperationResult(true, [$formatDateTime]);
         }
 
-        return new OperationResult(true, $this->getExtensionListLastUpdateScheduler());
+        return new OperationResult(true, [$this->getExtensionListLastUpdateScheduler()]);
     }
 
     /**
@@ -69,7 +69,7 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
      *
      * @return int
      */
-    public function getExtensionListLastUpdate()
+    public function getExtensionListLastUpdate(): int
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -91,9 +91,9 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
      * Get last extension list update of the scheduler task
      * @TODO: review if this method can be deleted/mark as depricated
      *
-     * @return void
+     * @return int
      */
-    public function getExtensionListLastUpdateScheduler()
+    public function getExtensionListLastUpdateScheduler(): int
     {
         if (!ExtensionManagementUtility::isLoaded('scheduler')) {
             return 0;
@@ -130,7 +130,7 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
             $taskObj = unserialize($task['serialized_task_object'], [AbstractTask::class]);
             if (get_class($taskObj) === UpdateExtensionListTask::class) {
                 if (!empty($task['lastexecution_time'])) {
-                    return (int)$task['lastexecution_time'];
+                    return intval($task['lastexecution_time']);
                 }
             }
         }

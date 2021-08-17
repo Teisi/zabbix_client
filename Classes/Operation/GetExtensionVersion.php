@@ -36,15 +36,14 @@ class GetExtensionVersion implements IOperation, SingletonInterface
         $extensionKey = $parameter['extensionKey'];
 
         if (!ExtensionManagementUtility::isLoaded($extensionKey)) {
-            return new OperationResult(false, 'Extension [' . $extensionKey . '] is not loaded');
+            return new OperationResult(false, [], 'Extension [' . $extensionKey . '] is not loaded');
         }
 
-        $_EXTKEY = $extensionKey;
         @include(ExtensionManagementUtility::extPath($extensionKey, 'ext_emconf.php'));
 
         if (is_array($EM_CONF[$extensionKey])) {
             return new OperationResult(true, $EM_CONF[$extensionKey]['version']);
         }
-        return new OperationResult(false, 'Cannot read EM_CONF for extension [' . $extensionKey . ']');
+        return new OperationResult(false, [], 'Cannot read EM_CONF for extension [' . $extensionKey . ']');
     }
 }

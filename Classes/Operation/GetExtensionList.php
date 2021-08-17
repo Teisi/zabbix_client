@@ -61,7 +61,7 @@ class GetExtensionList implements IOperation, SingletonInterface
             return new OperationResult(true, $extensionList);
         }
 
-        return new OperationResult(false, 'No extension locations given');
+        return new OperationResult(false, [], 'No extension locations given');
     }
 
     /**

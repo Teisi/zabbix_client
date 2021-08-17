@@ -12,7 +12,6 @@ namespace WapplerSystems\ZabbixClient\Operation;
 use Psr\Http\Message\RequestFactoryInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 use WapplerSystems\ZabbixClient\OperationResult;
 
 
@@ -55,27 +54,29 @@ class HasSecurityUpdate implements IOperation, SingletonInterface
             'cookies' => false,
         ];
 
+        $response = $this->requestFactory->request($url, 'GET', $additionalOptions);
+
         try {
             // Return a PSR-7 compliant response object
             $response = $this->requestFactory->request($url, 'GET', $additionalOptions);
-            // Get the content as a string on a successful request
-
             if ($response->getStatusCode() === 200) {
                 if (strpos($response->getHeaderLine('Content-Type'), 'application/json') === 0) {
                     $content = json_decode($response->getBody()->getContents(), true);
+
                     if(version_compare($currentTypo3Version, $content['version'])) {
-                        return new OperationResult(false, true);
+                        return new OperationResult(true, [true], 'Security update available ('.$content['version'].')');
                     }
 
-                    return new OperationResult(false, false);
+                    return new OperationResult(true, [false], 'No security update available.');
                 }
             }
         } catch (\Throwable $th) {
             // TODO: log this
+            // TODO: return proper error message
             //throw $th;
-            return new OperationResult(false, false);
+            return new OperationResult(false, [$th], 'Error retrieving the patch releases!');
         }
 
-        return new OperationResult(false, [ "success" => false, "message" => "Error retrieving the patch releases!" ]);
+        return new OperationResult(false, [], 'Error retrieving the patch releases!');
     }
 }

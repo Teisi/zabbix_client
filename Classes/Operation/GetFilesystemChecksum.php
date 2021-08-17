@@ -53,9 +53,10 @@ class GetFilesystemChecksum implements IOperation, SingletonInterface
                 $result['singleChecksums'] = $md5s;
             }
 
-            return new OperationResult(true, $result);
+            return new OperationResult(true, [$result]);
         }
-        return new OperationResult(false, 'Error: can\'t calculate checksum for file or folder');
+
+        return new OperationResult(false, [], 'Error: can\'t calculate checksum for file or folder');
     }
 
     /**
@@ -63,7 +64,7 @@ class GetFilesystemChecksum implements IOperation, SingletonInterface
      * check if path is allowed
      *
      * @param string $path absolute or relative path or EXT:foobar/
-     * @return string|bool FALSE if path is invalid, else the absolute path
+     * @return string empty if path is invalid, else the absolute path
      */
     protected function getPath($path)
     {
@@ -82,7 +83,8 @@ class GetFilesystemChecksum implements IOperation, SingletonInterface
         if (GeneralUtility::isAllowedAbsPath($path)) {
             return $path;
         }
-        return false;
+
+        return '';
     }
 
     /**
@@ -96,6 +98,7 @@ class GetFilesystemChecksum implements IOperation, SingletonInterface
         if (!is_file($path)) {
             return false;
         }
+
         return md5_file($path);
     }
 

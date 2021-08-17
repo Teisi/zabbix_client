@@ -32,9 +32,8 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
     public function execute($parameter = [])
     {
         if (!ExtensionManagementUtility::isLoaded('pagespeedinsights')) {
-            return new OperationResult(false, '');
+            return new OperationResult(false, [], 'EXT:pagespeedinsights not loaded!');
         }
-
 
         if (!isset($parameter['strategy']) || $parameter['strategy'] === '') {
             throw new InvalidArgumentException('no strategy set');
@@ -46,18 +45,18 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
 
         $uids = self::getDegradedPageIds($parameter['field'],$parameter['strategy']);
 
-        return new OperationResult(false, implode(',',$uids));
+        return new OperationResult(false, [implode(',', $uids)]);
     }
 
 
-    public static function getDegradedPageIds($field, $strategy):array {
-
+    public static function getDegradedPageIds($field, $strategy): array {
         $pageIds = [];
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $conditions = [
             $queryBuilder->expr()->eq('tx_pagespeedinsights_check', 1)
         ];
+
         $pages = $queryBuilder
             ->select('uid')
             ->from('pages')
@@ -83,15 +82,14 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
      *
      * @return int
      */
-    public static function getTrendOfPage(int $pageId, $strategy, $field) : int {
-
+    public static function getTrendOfPage(int $pageId, $strategy, $field): int {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_pagespeedinsights_results');
-
         $conditions = [];
 
         if (!empty($pageId)) {
             $conditions[] = $queryBuilder->expr()->eq('page_id', $pageId);
         }
+
         if (!empty($strategy)) {
             $conditions[] = $queryBuilder->expr()->eq('strategy', $queryBuilder->createNamedParameter($strategy));
         }
@@ -106,22 +104,24 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
             ->where(...$conditions)
             ->execute()
             ->fetch();
+
         $maxValue = (int)$data['max'];
 
-
         // get the last value
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_pagespeedinsights_results');
 
         $constraints = [
             $queryBuilder->expr()->eq('t3ver_id', 0)
         ];
+
         if ($pageId > 0) {
             $constraints[] = $queryBuilder->expr()->eq('page_id', $pageId);
         }
+
         if (!empty($strategy)) {
             $constraints[] = $queryBuilder->expr()->eq('strategy', $queryBuilder->createNamedParameter($strategy));
         }
+
         $data = $queryBuilder
             ->select($field.' as value')
             ->from('tx_pagespeedinsights_results')
@@ -136,8 +136,7 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
         if ($maxValue === $currentValue) {
             return 0;
         }
+
         return ($maxValue > $currentValue) ? -1 : 1;
     }
-
-
 }

@@ -70,7 +70,7 @@ class UpdateMinorTypo3 implements IOperation, SingletonInterface
                         try {
                             $this->environmentController->folderStructureFixAction();
                         } catch (\Throwable $th) {
-                            return new OperationResult(false, [ 'success' => false, 'status' => $th ]);
+                            return new OperationResult(false, [$th]);
                         }
                     }
 
@@ -109,18 +109,18 @@ class UpdateMinorTypo3 implements IOperation, SingletonInterface
                                         $coreUpdateActivate = $this->checkUpdateResponse($upgradeController->coreUpdateActivateAction($this->request));
                                         if($coreUpdateActivate['success']) {
                                             if($this->checkWebsiteStatusCode($siteBase)) {
-                                                return new OperationResult(true, true);
+                                                return new OperationResult(true, [true], 'Website returns statusCode 200, it should be fine!');
                                             }
 
                                             if($this->createTypo3Symlinks($typo3SourcePath, $typo3Typo3Path, $typo3IndexPath)) {
                                                 if($this->checkWebsiteStatusCode($siteBase)) {
-                                                    return new OperationResult(true, true);
+                                                    return new OperationResult(true, [true], 'Website returns statusCode 200, it should be fine!');
                                                 }
 
-                                                return new OperationResult(true, [ 'success' => false, 'status' => 'coreUpdateActivate failed! Can not create symlinks!' ]);
+                                                return new OperationResult(true, [], 'coreUpdateActivate failed! Can not create symlinks!');
                                             }
 
-                                            return new OperationResult(true, [ 'success' => false, 'status' => 'coreUpdateActivate failed!' ]);
+                                            return new OperationResult(true, [], 'coreUpdateActivate failed!');
                                         }
 
                                         return new OperationResult(true, $coreUpdateActivate);
@@ -138,16 +138,16 @@ class UpdateMinorTypo3 implements IOperation, SingletonInterface
                         return new OperationResult(true, $coreUpdateDownload);
                     }
 
-                    return new OperationResult(true, "Can't check pre conditions (no or wrong response)! Request status code: ". $checkPreConditions->getStatusCode());
+                    return new OperationResult(true, [], 'Can\'t check pre conditions (no or wrong response)! Request status code: '. $checkPreConditions->getStatusCode());
                 }
 
                 return new OperationResult(true, $jsonResponse);
             }
 
-            return new OperationResult(true, false);
+            return new OperationResult(true, [false]);
         }
 
-        return new OperationResult(true, false);
+        return new OperationResult(true, [false]);
     }
 
     /**

@@ -34,7 +34,7 @@ class GetFileSpoolValue implements IOperation, SingletonInterface
         $filePath = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_spool_filepath'] ?? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['spool_file_path'] ?? null;
 
         if (!$filePath) {
-            return new OperationResult(false, '');
+            return new OperationResult(false, [], 'mail transport_spool_filepath // spool_file_path not set = null!');
         }
 
         if ($value === 'pending') {
@@ -45,7 +45,7 @@ class GetFileSpoolValue implements IOperation, SingletonInterface
                     $count += 1;
                 }
             }
-            return new OperationResult(true, $count);
+            return new OperationResult(true, [$count]);
         }
 
         if ($value === 'sending') {
@@ -56,7 +56,7 @@ class GetFileSpoolValue implements IOperation, SingletonInterface
                     $count += 1;
                 }
             }
-            return new OperationResult(true, $count);
+            return new OperationResult(true, [$count]);
         }
 
         if ($value === 'lag') {
@@ -67,7 +67,7 @@ class GetFileSpoolValue implements IOperation, SingletonInterface
                     $age = max($age, time() - $file->getMTime());
                 }
             }
-            return new OperationResult(true, $age);
+            return new OperationResult(true, [$age]);
         }
 
         throw new \InvalidArgumentException('Parameter value not set or invalid');

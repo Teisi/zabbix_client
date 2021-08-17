@@ -105,7 +105,7 @@ class GetRecords implements IOperation, SingletonInterface
         $this->includeTCA();
 
         if (!isset($GLOBALS['TCA'][$table])) {
-            return new OperationResult(false, 'Table [' . $table . '] not found in the TCA');
+            return new OperationResult(false, [], 'Table [' . $table . '] not found in the TCA');
         }
 
         if (is_array($field) && is_array($value)) {
@@ -113,8 +113,7 @@ class GetRecords implements IOperation, SingletonInterface
             foreach ($field as $val) {
                 if (!isset($GLOBALS['TCA'][$table]['columns'][$val]) && (!in_array($val,
                             $this->implicitFields) || !in_array($val, $value))) {
-                    return new OperationResult(false,
-                        'Field [' . $val . '] of table [' . $table . '] not found in the TCA OR not found in value array.');
+                    return new OperationResult(false, [], 'Field [' . $val . '] of table [' . $table . '] not found in the TCA OR not found in value array.');
                 }
             }
 
@@ -122,14 +121,12 @@ class GetRecords implements IOperation, SingletonInterface
             foreach ($value as $key => $val) {
                 if (!isset($GLOBALS['TCA'][$table]['columns'][$key]) && (!in_array($key,
                             $this->implicitFields) || !in_array($key, $field))) {
-                    return new OperationResult(false,
-                        'Field [' . $key . '] of table [' . $table . '] not found in the TCA OR not found in field array.');
+                    return new OperationResult(false, [], 'Field [' . $key . '] of table [' . $table . '] not found in the TCA OR not found in field array.');
                 }
             }
         } else { // check that all requested fields are present in the TCA (and the value array.
             if (!isset($GLOBALS['TCA'][$table]['columns'][$field]) && !in_array($field, $this->implicitFields)) {
-                return new OperationResult(false,
-                    'Field [' . $field . '] of table [' . $table . '] not found in the TCA');
+                return new OperationResult(false, [], 'Field [' . $field . '] of table [' . $table . '] not found in the TCA');
             }
         }
 
@@ -188,7 +185,8 @@ class GetRecords implements IOperation, SingletonInterface
 
             return new OperationResult(true, $records);
         }
-        return new OperationResult(false, 'Error when executing SQL: [' . $GLOBALS['TYPO3_DB']->sql_error() . ']');
+
+        return new OperationResult(false, [], 'Error when executing SQL: [' . $GLOBALS['TYPO3_DB']->sql_error() . ']');
     }
 
     /**

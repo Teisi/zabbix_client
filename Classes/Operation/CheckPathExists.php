@@ -50,16 +50,17 @@ class CheckPathExists implements IOperation, SingletonInterface
                 'path' => $parameter,
             ]);
         }
-        return new OperationResult(false, ['path' => $parameter]);
+
+        return new OperationResult(false, ['path' => $parameter], 'Param is not a file or directory!');
     }
 
     /**
      * prepare path, resolve relative path and resolve EXT: path
      *
      * @param string $path absolute or relative path or EXT:foobar/
-     * @return string/bool false if path is invalid, else the absolute path
+     * @return string empty if path is invalid, else the absolute path
      */
-    protected function getPath($path)
+    protected function getPath($path): string
     {
         // getFileAbsFileName can't handle directory path with trailing / correctly
         if (substr($path, -1) === '/') {
@@ -76,6 +77,7 @@ class CheckPathExists implements IOperation, SingletonInterface
         if (GeneralUtility::isAllowedAbsPath($path)) {
             return $path;
         }
-        return false;
+
+        return '';
     }
 }

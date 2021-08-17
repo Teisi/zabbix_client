@@ -52,10 +52,10 @@ class GetRecord implements IOperation, SingletonInterface
         $checkEnableFields = $parameter['checkEnableFields'] == true;
         \TYPO3\CMS\Frontend\Utility\EidUtility::initTCA();
         if (!isset($GLOBALS['TCA'][$table])) {
-            return new OperationResult(false, 'Table [' . $table . '] not found in the TCA');
+            return new OperationResult(false, [], 'Table [' . $table . '] not found in the TCA');
         }
         if (!isset($GLOBALS['TCA'][$table]['columns'][$field]) && !in_array($field, $this->implicitFields)) {
-            return new OperationResult(false, 'Field [' . $field . '] of table [' . $table . '] not found in the TCA');
+            return new OperationResult(false, [], 'Field [' . $field . '] of table [' . $table . '] not found in the TCA');
         }
 
         $result = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -76,9 +76,12 @@ class GetRecord implements IOperation, SingletonInterface
 
                 return new OperationResult(true, $record);
             }
-            return new OperationResult(true, false);
+
+            // TODO: missing message
+            return new OperationResult(true, [false]);
         }
-        return new OperationResult(false, 'Error when executing SQL: [' . $GLOBALS['TYPO3_DB']->sql_error() . ']');
+
+        return new OperationResult(false, [], 'Error when executing SQL: [' . $GLOBALS['TYPO3_DB']->sql_error() . ']');
     }
 
     /**

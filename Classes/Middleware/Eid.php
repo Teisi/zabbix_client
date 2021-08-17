@@ -87,7 +87,7 @@ class Eid
             $operationManager = $managerFactory->getOperationManager();
             try {
                 $result = $operationManager->executeOperation($operation, $params);
-            } catch (InvalidOperationException $ex){
+            } catch (InvalidOperationException $ex) {
                 return $response->withStatus(404,  $ex->getMessage());
             } catch (\Exception $ex) {
                 return $response->withStatus(500,  substr(strrchr(get_class($ex), "\\"), 1) . ': '. $ex->getMessage());

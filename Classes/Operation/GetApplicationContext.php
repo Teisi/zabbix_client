@@ -31,10 +31,10 @@ class GetApplicationContext implements IOperation, SingletonInterface
 
         if (version_compare($typo3Version, '9.5.0', '>=')) {
             $applicationContext = Environment::getContext();
-            return new OperationResult(true, $applicationContext->__toString());
+            return new OperationResult(true, [ $applicationContext->__toString() ]);
         }
 
         $applicationContext = GeneralUtility::getApplicationContext();
-        return new OperationResult(true, $applicationContext->__toString());
+        return new OperationResult(true, [ $applicationContext->__toString() ]);
     }
 }

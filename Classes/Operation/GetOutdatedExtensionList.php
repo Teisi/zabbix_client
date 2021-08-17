@@ -83,7 +83,7 @@ class GetOutdatedExtensionList implements IOperation, SingletonInterface
         }
         $out = substr($out, 0, -1);
 
-        return new OperationResult(true, $out);
+        return new OperationResult(true, [$out]);
     }
 
 }

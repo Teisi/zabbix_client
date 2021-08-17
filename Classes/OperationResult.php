@@ -21,20 +21,30 @@ class OperationResult
     protected $status;
 
     /**
-     * @var array|string
+     * @var array
      */
     protected $value;
+
+    /**
+     * additional $message
+     * e. g. error message if $status is false
+     *
+     * @var string
+     */
+    protected $message;
 
     /**
      * Construct a new operation result
      *
      * @param bool $status
-     * @param mixed $value
+     * @param array $value
+     * @param string $message
      */
-    public function __construct($status, $value = null)
+    public function __construct($status, $value = [], $message = '')
     {
         $this->status = $status;
         $this->value = $value;
+        $this->message = $message;
     }
 
     /**
@@ -46,7 +56,7 @@ class OperationResult
     }
 
     /**
-     * @return array|string|null The operation value
+     * @return array The operation value
      */
     public function getValue()
     {
@@ -54,10 +64,18 @@ class OperationResult
     }
 
     /**
+     * @return array The operation message
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
      * @return array The Operation Result as an array
      */
     public function toArray()
     {
-        return ['status' => $this->status, 'value' => $this->value];
+        return ['status' => $this->status, 'value' => $this->value, 'message' => $this->message];
     }
 }

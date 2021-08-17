@@ -52,6 +52,6 @@ class GetZabbixLogFileSize implements IOperation, SingletonInterface
 
         $totalSize /= 1024;
 
-        return new OperationResult(true, (int)$totalSize);
+        return new OperationResult(true, [(int)$totalSize]);
     }
 }

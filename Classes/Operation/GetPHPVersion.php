@@ -26,6 +26,6 @@ class GetPHPVersion implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        return new OperationResult(true, PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION);
+        return new OperationResult(true, [PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION]);
     }
 }
