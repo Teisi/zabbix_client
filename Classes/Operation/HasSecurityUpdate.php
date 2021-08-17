@@ -54,8 +54,6 @@ class HasSecurityUpdate implements IOperation, SingletonInterface
             'cookies' => false,
         ];
 
-        $response = $this->requestFactory->request($url, 'GET', $additionalOptions);
-
         try {
             // Return a PSR-7 compliant response object
             $response = $this->requestFactory->request($url, 'GET', $additionalOptions);
