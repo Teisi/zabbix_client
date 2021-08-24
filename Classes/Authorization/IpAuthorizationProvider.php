@@ -157,7 +157,12 @@ class IpAuthorizationProvider extends AuthorizationProvider implements Authoriza
      */
     public function isAllowedIp(): bool
     {
-        $ipArray = \explode(',', $this->getAllowedIps());
+        $allowedIps = $this->getAllowedIps();
+        if($allowedIps === '*') {
+            return true;
+        }
+
+        $ipArray = \explode(',', $allowedIps);
         if(\in_array($this->getIp(), $ipArray)) {
             return true;
         }
