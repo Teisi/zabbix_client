@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Middleware;
 
@@ -40,10 +41,7 @@ class Log404 implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function process(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler
-    ): ResponseInterface {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
         $response = $handler->handle($request);
         $statusCode = $response->getStatusCode();
 

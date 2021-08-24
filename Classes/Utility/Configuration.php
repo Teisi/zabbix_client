@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WapplerSystems\ZabbixClient\Utility;
 
 /**
@@ -19,7 +21,7 @@ class Configuration
     /**
      * @return array
      */
-    public static function getExtConfiguration()
+    public static function getExtConfiguration(): array
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
 
@@ -33,6 +35,7 @@ class Configuration
             return $extensionConfiguration;
 
         }
+
         return [];
     }
 

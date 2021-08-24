@@ -12,7 +12,6 @@ namespace WapplerSystems\ZabbixClient\ViewHelpers;
 
 // use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use \TYPO3\CMS\Core\ViewHelpers\Form\TypoScriptConstantsViewHelper;
 
 class ApiKeyViewHelper extends AbstractViewHelper {
 

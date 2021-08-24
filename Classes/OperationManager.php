@@ -45,9 +45,11 @@ class OperationManager implements IOperationManager
         if (is_string($this->operations[$operationKey])) {
             return GeneralUtility::makeInstance($this->operations[$operationKey]);
         }
+
         if (is_object($this->operations[$operationKey])) {
             return $this->operations[$operationKey];
         }
+
         return false;
     }
 
@@ -59,7 +61,7 @@ class OperationManager implements IOperationManager
      * @param array|null $parameter
      * @return OperationResult
      */
-    public function executeOperation(ServerRequestInterface $request, $operationKey, $parameter = []) : OperationResult
+    public function executeOperation(ServerRequestInterface $request, $operationKey, $parameter = []): OperationResult
     {
         $operation = $this->getOperation($operationKey);
         if (!$operation) {
@@ -67,6 +69,7 @@ class OperationManager implements IOperationManager
         }
 
         $parameter['request'] = $request;
+
         return $operation->execute($parameter);
     }
 }

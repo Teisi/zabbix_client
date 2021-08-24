@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WapplerSystems\ZabbixClient\Response;
 
 /*
@@ -52,7 +54,7 @@ class JsonResponse extends Response
      */
     public function __construct(
         $data = [],
-        $status = 200,
+        int $status = 200,
         array $headers = [],
         $encodingOptions = self::DEFAULT_JSON_FLAGS
     ) {
@@ -92,11 +94,12 @@ class JsonResponse extends Response
      * @return string
      * @throws \InvalidArgumentException if unable to encode the $data to JSON.
      */
-    private function jsonEncode($data, $encodingOptions)
+    private function jsonEncode($data, $encodingOptions): string
     {
         if (is_resource($data)) {
             throw new \InvalidArgumentException('Cannot JSON encode resources', 1504972433);
         }
+
         // Clear json_last_error()
         json_encode(null);
         $json = json_encode($data, $encodingOptions);
@@ -107,6 +110,7 @@ class JsonResponse extends Response
                 json_last_error_msg()
             ), 1504972434);
         }
+
         return $json;
     }
 }

@@ -40,7 +40,7 @@ class OperationResult
      * @param array $value
      * @param string $message
      */
-    public function __construct($status, $value = [], $message = '')
+    public function __construct(bool $status, array $value = [], string $message = '')
     {
         $this->status = $status;
         $this->value = $value;
@@ -50,7 +50,7 @@ class OperationResult
     /**
      * @return bool If the operation was executed successful
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->status;
     }
@@ -58,15 +58,15 @@ class OperationResult
     /**
      * @return array The operation value
      */
-    public function getValue()
+    public function getValue(): array
     {
         return $this->value;
     }
 
     /**
-     * @return array The operation message
+     * @return string The operation message
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -74,7 +74,7 @@ class OperationResult
     /**
      * @return array The Operation Result as an array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return ['status' => $this->status, 'value' => $this->value, 'message' => $this->message];
     }

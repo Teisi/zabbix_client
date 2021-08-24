@@ -31,7 +31,7 @@ interface IOperationManager
      * @param string $operationKey The key of the operation (All lowercase, underscores)
      * @param string|object $operation Operation instance or class
      */
-    public function registerOperation($operationKey, $operation);
+    public function registerOperation(string $operationKey, $operation);
 
     /**
      * Get a registered operation as instance by key
@@ -39,7 +39,7 @@ interface IOperationManager
      * @param string $operationKey
      * @return IOperation|bool The Operation instance or FALSE if not registered
      */
-    public function getOperation($operationKey);
+    public function getOperation(string $operationKey);
 
     /**
      * Execute an Operation by key with optional parameters
@@ -49,5 +49,5 @@ interface IOperationManager
      * @param array $parameter
      * @return OperationResult
      */
-    public function executeOperation(ServerRequestInterface $request, $operationKey, $parameter = []);
+    public function executeOperation(ServerRequestInterface $request, string $operationKey, array $parameter = []): OperationResult;
 }
