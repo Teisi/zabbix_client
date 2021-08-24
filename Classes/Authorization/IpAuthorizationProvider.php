@@ -10,6 +10,7 @@ namespace WapplerSystems\ZabbixClient\Authorization;
  * LICENSE.txt file that was distributed with this source code.
  */
 
+// use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use WapplerSystems\ZabbixClient\Authorization\AuthorizationProvider;
@@ -84,22 +85,29 @@ class IpAuthorizationProvider extends AuthorizationProvider implements Authoriza
      * checks if ip should be blocked for access
      * returns true if record is blocked
      *
-     * @param int $time - in minutes e. g. 5 = 5 minutes locked since last failed attempt
-     * @param int $maxCount - how often a request may take place before it is blocked = returns true
      * @return bool
      */
-    public function checkIfBlockedIp(int $time = 5, int $maxCount = 3): bool
+    public function checkIfBlockedIp(): bool
     {
         if($this->isAllowedIp()) {
             // if no entry given for this ip
             if(empty($this->blockedRecord)) {
+                $this->setBlockedIp(1);
+
                 return false;
             }
 
+            // TODO: count request from ip, allow only 5 request within time
+            // $requestedTimeStamp = $this->request->getServerParams()['REQUEST_TIME'];
+            // $requestedTime = new \DateTime();
+            // $requestedTime->setTimestamp($requestedTimeStamp);
+            // $currentTime = new \DateTime();
+
             // if the last entry is older than e. g. 5 minutes
             // don't block and set reset counter
+            $blockTime = \intval($this->config['blockTime']);
             $oldDate = new \DateTime();
-            $oldDate->modify('-'.$time.' minutes');
+            $oldDate->modify('-'.$blockTime.' minutes');
             if($this->blockedRecord->getTstamp() <= $oldDate) {
                 $this->setBlockedIp(1);
 
@@ -108,6 +116,7 @@ class IpAuthorizationProvider extends AuthorizationProvider implements Authoriza
 
             // if there are less than $maxCount entries then increase the counter by one
             $recordCount = $this->blockedRecord->getCount();
+            $maxCount = \intval($this->config['maxCount']);
             if($recordCount < $maxCount) {
                 $newCount = $recordCount + 1;
                 $this->setBlockedIp($newCount);
