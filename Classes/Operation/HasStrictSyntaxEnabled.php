@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -28,7 +29,7 @@ class HasStrictSyntaxEnabled implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         return new OperationResult(true, [[ 'bool' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('TypoScript.strictSyntax') ]]);
     }

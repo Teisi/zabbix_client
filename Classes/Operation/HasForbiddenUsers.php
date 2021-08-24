@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -29,7 +30,7 @@ class HasForbiddenUsers implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         if (!isset($parameter['usernames'])) {
             throw new InvalidArgumentException('no usernames set');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -23,7 +24,7 @@ use WapplerSystems\ZabbixClient\Utility\FormatUtility;
 class GetLastExtensionListUpdate implements IOperation, SingletonInterface
 {
 
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         // Should be the extensionmanager repository used?
         $useExtensionListRepo = empty((bool)$parameter['extensionlist']) ? false : true;

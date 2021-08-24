@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -19,7 +20,7 @@ use WapplerSystems\ZabbixClient\Utility\FormatUtility;
 class GetLastSchedulerRun implements IOperation, SingletonInterface
 {
 
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         /** @var Registry $registry */
         $registry = GeneralUtility::makeInstance(Registry::class);

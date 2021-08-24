@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -65,7 +66,7 @@ class GetSystemInfos implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $scope = empty($parameter['scope']) ? 'all' : (is_string($parameter['scope']) ? $parameter['scope'] : '');
 

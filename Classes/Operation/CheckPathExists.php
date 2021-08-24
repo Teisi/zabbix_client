@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -28,7 +29,7 @@ class CheckPathExists implements IOperation, SingletonInterface
      * @param array $parameter a path 'path' to a file or folder
      * @return OperationResult 'file' if path is a file, 'directory' if it's a directory and false if it doesn't exist
      */
-    public function execute($parameter = null)
+    public function execute(array $parameter = []): OperationResult
     {
         if(!isset($parameter['path'])) {
             return new OperationResult(false, [], 'Param path not set!');

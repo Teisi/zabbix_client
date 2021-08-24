@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -29,7 +30,7 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         if (version_compare(TYPO3_version, '9.0.0', '<')) {
             \TYPO3\CMS\Core\Core\Bootstrap::getInstance()

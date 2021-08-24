@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -39,7 +40,7 @@ class HasUpdate implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $typo3Version = GeneralUtility::makeInstance(\WapplerSystems\ZabbixClient\Operation\GetTYPO3Version::class)->execute();
         $currentTypo3Version = $typo3Version->getValue();

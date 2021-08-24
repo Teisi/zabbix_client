@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -95,7 +96,7 @@ class GetRecords implements IOperation, SingletonInterface
      * @return OperationResult A set of records as an array or FALSE if no record was found
      * @example ../services/class.FindBlacklistedBePasswordTestService.php This class tests if there are duplicate passwords, besides checking for the presence of blacklisted passwords.
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $table = $parameter['table'];
         $field = $parameter['field'];

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -23,7 +24,7 @@ class GetOpCacheStatus implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current database version
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         /** @var OpcodeCacheService $opCacheService */
         $opCacheService = GeneralUtility::makeInstance(OpcodeCacheService::class);

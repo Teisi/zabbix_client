@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -28,7 +29,7 @@ class GetZabbixClientLock implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current PHP version
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $this->lockRepository = $objectManager->get('WapplerSystems\\ZabbixClient\\Domain\\Repository\\LockRepository');

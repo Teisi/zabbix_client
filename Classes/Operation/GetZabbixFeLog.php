@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -22,7 +23,7 @@ class GetZabbixFeLog implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current application context
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $limit = $parameter['limit'] ? intval($parameter['limit']) : 10;
         /** @var QueryBuilder $queryBuilder */

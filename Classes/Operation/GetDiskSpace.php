@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -25,7 +26,7 @@ class GetDiskSpace implements IOperation, SingletonInterface
      * @param array $parameter
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $path = !empty($parameter['path']) ? $parameter['path'] : '/';
 

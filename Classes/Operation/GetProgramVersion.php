@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -25,7 +26,7 @@ class GetProgramVersion implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current PHP version
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         if (!isset($parameter['program'])) {
             // throw new InvalidArgumentException('no program set');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -48,7 +49,7 @@ class UpdateMinorTypo3 implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $this->request = $parameter['request'];
         $this->initTSFE();
@@ -156,7 +157,7 @@ class UpdateMinorTypo3 implements IOperation, SingletonInterface
      * @param \TYPO3\CMS\Core\Http\JsonResponse $response
      * @return array
      */
-    public function checkUpdateResponse(\TYPO3\CMS\Core\Http\JsonResponse $response) {
+    public function checkUpdateResponse(\TYPO3\CMS\Core\Http\JsonResponse $response): array {
         if($response->getStatusCode() === 200) {
             return json_decode($response->getBody()->getContents(), true);
         }
@@ -172,9 +173,9 @@ class UpdateMinorTypo3 implements IOperation, SingletonInterface
      * checks if provided url returns statusCode 200
      *
      * @param string $url Website url
-     * @return void
+     * @return bool
      */
-    public function checkWebsiteStatusCode(string $url) {
+    public function checkWebsiteStatusCode(string $url): bool {
         $additionalOptions = [
             // Additional headers for this specific request
             'headers' => ['Cache-Control' => 'no-cache'],

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -24,7 +25,7 @@ class GetDatabaseVersion implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current database version
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $db = [];
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -28,7 +29,7 @@ class GetFileSpoolValue implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $value = $parameter['value'] ?? null;
         $filePath = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_spool_filepath'] ?? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['spool_file_path'] ?? null;

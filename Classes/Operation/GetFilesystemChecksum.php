@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -30,7 +31,7 @@ class GetFilesystemChecksum implements IOperation, SingletonInterface
      * @param array $parameter Path to a file or folder
      * @return OperationResult The checksum of the given folder or file
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         $path = $this->getPath($parameter['path']);
         $getSingleChecksums = $this->getPath($parameter['getSingleChecksums']);

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -24,7 +25,7 @@ class GetPHPVersion implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current PHP version
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         return new OperationResult(true, [[ 'version' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION ]]);
     }

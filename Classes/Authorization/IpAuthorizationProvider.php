@@ -11,6 +11,8 @@ namespace WapplerSystems\ZabbixClient\Authorization;
  */
 
 // use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageNewException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use WapplerSystems\ZabbixClient\Authorization\AuthorizationProvider;
@@ -98,6 +100,7 @@ class IpAuthorizationProvider extends AuthorizationProvider implements Authoriza
             }
 
             // TODO: count request from ip, allow only 5 request within time
+            // set session?
             // $requestedTimeStamp = $this->request->getServerParams()['REQUEST_TIME'];
             // $requestedTime = new \DateTime();
             // $requestedTime->setTimestamp($requestedTimeStamp);

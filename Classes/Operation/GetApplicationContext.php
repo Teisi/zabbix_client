@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation;
 
@@ -20,7 +21,7 @@ class GetApplicationContext implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult the current application context
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         if(!empty(TYPO3_version)) {
             $typo3Version = TYPO3_version;
