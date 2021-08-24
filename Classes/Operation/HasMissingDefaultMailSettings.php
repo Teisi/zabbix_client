@@ -30,17 +30,17 @@ class HasMissingDefaultMailSettings implements IOperation, SingletonInterface
     {
         $returnValue = [];
         if (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])) {
-            $returnValue[] = 'defaultMailFromAddress';
+            $returnValue['defaultMailFromAddress'] = 'defaultMailFromAddress';
         }
 
         if (empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])) {
-            $returnValue[] = 'defaultMailFromName';
+            $returnValue['defaultMailFromName'] = 'defaultMailFromName';
         }
 
         if(empty($returnValue)) {
             return new OperationResult(true, [], 'No missing default mail settings detected!');
         }
 
-        return new OperationResult(true, $returnValue);
+        return new OperationResult(true, [ $returnValue ]);
     }
 }

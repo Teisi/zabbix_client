@@ -27,7 +27,6 @@ class GetProgramVersion implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
         if (!isset($parameter['program'])) {
             // throw new InvalidArgumentException('no program set');
             return new OperationResult(false, [], 'Param \'program\' not set! Allowed values are: \'openssl, gm, im, optipng, jpegoptim, webp\'.');
@@ -112,6 +111,6 @@ class GetProgramVersion implements IOperation, SingletonInterface
                 break;
         }
 
-        return new OperationResult(false);
+        return new OperationResult(false, [], 'Path to program \''.$programName.'\' not found!');
     }
 }

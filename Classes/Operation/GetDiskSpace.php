@@ -37,9 +37,9 @@ class GetDiskSpace implements IOperation, SingletonInterface
             $free = disk_free_space($path);
         }
 
-        return new OperationResult(true, [
+        return new OperationResult(true, [[
             'total' => $total,
             'free' => $free,
-        ]);
+        ]]);
     }
 }

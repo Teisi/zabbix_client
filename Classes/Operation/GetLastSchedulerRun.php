@@ -28,15 +28,15 @@ class GetLastSchedulerRun implements IOperation, SingletonInterface
 
         if (isset($lastRun['end'])) {
             if(empty($parameter['format'])) {
-                $returnValue = $lastRun['end'];
+                return new OperationResult(true, [[ 'tstamp' => $lastRun['end'] ]]);
             } else {
                 $returnValue = FormatUtility::formatDateTime($lastRun['end'], $parameter['format']);
                 if(empty($returnValue)) {
                     return new OperationResult(false, [], 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'');
                 }
-            }
 
-            return new OperationResult(true, [$returnValue]);
+                return new OperationResult(true, [[ 'formated' => $returnValue ]]);
+            }
         }
 
         return new OperationResult(false, [], 'Can\'t detect last scheduler run!');

@@ -25,10 +25,10 @@ class GetOpCacheStatus implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
         /** @var OpcodeCacheService $opCacheService */
         $opCacheService = GeneralUtility::makeInstance(OpcodeCacheService::class);
 
-        return new OperationResult(true, $opCacheService->getAllActive());
+        $allActive = $opCacheService->getAllActive();
+        return new OperationResult(true, [[ 'OPcache' => [$allActive['OPcache']] ]]);
     }
 }

@@ -33,6 +33,6 @@ class GetTYPO3Version implements IOperation, SingletonInterface
             $version = TYPO3_version;
         }
 
-        return new OperationResult(true, [$version]);
+        return new OperationResult(true, [[ 'version' => $version ]]);
     }
 }

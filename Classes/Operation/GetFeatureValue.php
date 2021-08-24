@@ -77,7 +77,7 @@ class GetFeatureValue implements IOperation, SingletonInterface
             /** @var AbstractPreset $preset */
             foreach ($presets as $preset) {
                 if ($preset->isActive()) {
-                    return new OperationResult(true, [$preset->getName()]);
+                    return new OperationResult(true, [[ 'data' => $preset->getName() ]]);
                 }
             }
         } catch (Exception $e) {

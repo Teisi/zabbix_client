@@ -31,23 +31,23 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
         if ($useExtensionListRepo) {
             $result = $this->getExtensionListLastUpdate();
             if(empty($result)) {
-                return new OperationResult(true, [0]);
+                return new OperationResult(true);
             }
 
             if(!empty($parameter['format'])) {
                 $formatDateTime = FormatUtility::formatDateTime($result, $parameter['format']);
                 if(empty($formatDateTime)) {
-                    return new OperationResult(true, [], 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'');
+                    return new OperationResult(false, [], 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'');
                 }
 
-                return new OperationResult(true, [$formatDateTime]);
+                return new OperationResult(true, [[ 'formated' => $formatDateTime ]]);
             }
 
-            return new OperationResult(true, [intval($result)]);
+            return new OperationResult(true, [[ 'tstamp' => $result ]]);
         }
 
         if (!ExtensionManagementUtility::isLoaded('scheduler')) {
-            return new OperationResult(true, [0]);
+            return new OperationResult(false, [], 'EXT:scheduler not loaded/installed!');
         }
 
         // @TODO: review if this is maybe deprectated? (getExtensionListLastUpdateScheduler())
@@ -57,10 +57,10 @@ class GetLastExtensionListUpdate implements IOperation, SingletonInterface
                 return new OperationResult(false, [], 'Param \'format\' not valid! Valid values are: \'d M Y H:i:s, d M Y, H:i:s, c, r\'');
             }
 
-            return new OperationResult(true, [$formatDateTime]);
+            return new OperationResult(true, [[ 'formated' => $formatDateTime ]]);
         }
 
-        return new OperationResult(true, [$this->getExtensionListLastUpdateScheduler()]);
+        return new OperationResult(true, [[ 'tstamp' => $this->getExtensionListLastUpdateScheduler() ]]);
     }
 
     /**

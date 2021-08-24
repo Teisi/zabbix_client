@@ -16,23 +16,49 @@ use WapplerSystems\ZabbixClient\Utility\Configuration;
 
 class KeyAuthenticationProvider
 {
+    /**
+     * ServerRequest
+     *
+     * @var \TYPO3\CMS\Core\Http\ServerRequest
+     */
+    protected $request;
 
     /**
-     * @param $key
+     * Extension configuration
+     *
+     * @var array
+     */
+    protected $config = [];
+
+    public function __construct(\TYPO3\CMS\Core\Http\ServerRequest $request) {
+        $this->request = $request;
+        $this->config = Configuration::getExtConfiguration();
+    }
+
+    /**
      * @return bool
      */
-    public function hasValidKey($key)
+    public function hasValidKey(): bool
     {
-        $config = Configuration::getExtConfiguration();
+        $accessMethod = $this->config['accessMethod'];
+        switch (intval($accessMethod)) {
+            case 1:
+                $key = $this->request->getHeaders()['api-key'][0];
+                break;
 
-        if(!empty($config['apiKeyHashed']) && $config['apiKeyHashed'] === true) {
+            default:
+                $key = $this->request->getParsedBody()['key'] ?? $this->request->getQueryParams()['key'] ?? null;
+                break;
+        }
+
+        if(!empty($this->config['apiKeyHashed']) && $this->config['apiKeyHashed'] === true) {
             // The context, either 'FE' or 'BE'
             $mode = 'BE';
             return GeneralUtility::makeInstance(PasswordHashFactory::class)
-                ->get($config['apiKey'], $mode) # or getDefaultHashInstance($mode)
-                ->checkPassword($key, $config['apiKey']);
+                ->get($this->config['apiKey'], $mode) # or getDefaultHashInstance($mode)
+                ->checkPassword($key, $this->config['apiKey']);
         }
 
-        return trim($config['apiKey']) === trim($key);
+        return trim($this->config['apiKey']) === trim($key);
     }
 }

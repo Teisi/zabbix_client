@@ -83,7 +83,11 @@ class GetInsecureExtensionList implements IOperation, SingletonInterface
         }
         $out = substr($out, 0, -1);
 
-        return new OperationResult(true, [$out]);
+        if($out < 1) {
+            return new OperationResult(true, []);
+        }
+
+        return new OperationResult(true, [[ 'list' => $out ]]);
     }
 
 }

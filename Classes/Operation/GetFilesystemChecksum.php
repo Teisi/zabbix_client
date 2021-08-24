@@ -53,7 +53,7 @@ class GetFilesystemChecksum implements IOperation, SingletonInterface
                 $result['singleChecksums'] = $md5s;
             }
 
-            return new OperationResult(true, [$result]);
+            return new OperationResult(true, [[ 'data' => $result ]]);
         }
 
         return new OperationResult(false, [], 'Error: can\'t calculate checksum for file or folder');

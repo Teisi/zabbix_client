@@ -34,6 +34,6 @@ class GetZabbixClientLock implements IOperation, SingletonInterface
         $this->lockRepository = $objectManager->get('WapplerSystems\\ZabbixClient\\Domain\\Repository\\LockRepository');
         $lockRecord = $this->lockRepository->findLast();
 
-        return new OperationResult(true, [$lockRecord]);
+        return new OperationResult(true, [[ 'lock' => $lockRecord ]]);
     }
 }

@@ -48,6 +48,6 @@ class HasForbiddenUsers implements IOperation, SingletonInterface
             ));
         }
 
-        return new OperationResult(true, [$queryBuilder->execute()->rowCount() > 0]);
+        return new OperationResult(true, [[ 'bool' => $queryBuilder->execute()->rowCount() > 0 ]]);
     }
 }

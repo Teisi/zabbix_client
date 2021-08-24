@@ -30,6 +30,6 @@ class HasStrictSyntaxEnabled implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        return new OperationResult(true, [GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('TypoScript.strictSyntax')]);
+        return new OperationResult(true, [[ 'bool' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('TypoScript.strictSyntax') ]]);
     }
 }

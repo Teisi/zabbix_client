@@ -45,6 +45,6 @@ class HasFailedSchedulerTask implements IOperation, SingletonInterface
 
         $count = $queryBuilder->execute()->fetchColumn(0);
 
-        return new OperationResult(true, [$count > 0]);
+        return new OperationResult(true, [[ 'data' => $count > 0 ]]);
     }
 }

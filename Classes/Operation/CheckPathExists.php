@@ -30,7 +30,15 @@ class CheckPathExists implements IOperation, SingletonInterface
      */
     public function execute($parameter = null)
     {
-        $path = $this->getPath($parameter);
+        if(!isset($parameter['path'])) {
+            return new OperationResult(false, [], 'Param path not set!');
+        }
+
+        if(empty($parameter['path'])) {
+            return new OperationResult(false, [], 'Param path is empty!');
+        }
+
+        $path = $this->getPath($parameter['path']);
         list($path) = glob($path);
 
         if (is_file($path)) {
@@ -38,20 +46,20 @@ class CheckPathExists implements IOperation, SingletonInterface
             $time = filemtime($path);
             $size = filesize($path);
 
-            return new OperationResult(true, [
+            return new OperationResult(true, [[
                 'type' => 'file',
-                'path' => $parameter,
+                'path' => $parameter['path'],
                 'time' => $time,
                 'size' => $size,
-            ]);
+            ]]);
         } elseif (is_dir($path)) {
-            return new OperationResult(true, [
+            return new OperationResult(true, [[
                 'type' => 'folder',
-                'path' => $parameter,
-            ]);
+                'path' => $parameter['path'],
+            ]]);
         }
 
-        return new OperationResult(false, ['path' => $parameter], 'Param is not a file or directory!');
+        return new OperationResult(false, [[ 'path' => $parameter['path'] ]], 'Param path is not a file or directory!');
     }
 
     /**
@@ -60,7 +68,7 @@ class CheckPathExists implements IOperation, SingletonInterface
      * @param string $path absolute or relative path or EXT:foobar/
      * @return string empty if path is invalid, else the absolute path
      */
-    protected function getPath($path): string
+    protected function getPath(string $path): string
     {
         // getFileAbsFileName can't handle directory path with trailing / correctly
         if (substr($path, -1) === '/') {

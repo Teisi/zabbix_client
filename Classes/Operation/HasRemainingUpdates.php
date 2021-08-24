@@ -62,7 +62,7 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
                     $markedDoneInRegistry = $registry->get('installUpdate', $className, false);
                     if (!$markedDoneInRegistry && $updateObject->shouldRenderWizard()) {
                         // at least one wizard was found
-                        return new OperationResult(true, [true]);
+                        return new OperationResult(true, [[ 'bool' => true ]]);
                     }
                 }
 
@@ -70,7 +70,7 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
                 return new OperationResult(false, [$exception], 'error 4325534583');
             }
 
-            return new OperationResult(true, [false]);
+            return new OperationResult(true, [[ 'bool' => false ]]);
         }
 
         $upgradeWizardsService = GeneralUtility::makeInstance(UpgradeWizardsService::class);
@@ -82,7 +82,7 @@ class HasRemainingUpdates implements IOperation, SingletonInterface
             }
         );
 
-        return new OperationResult(true, [count($incompleteWizards) > 0]);
+        return new OperationResult(true, [[ 'bool' => count($incompleteWizards) > 0 ]]);
     }
 
 }

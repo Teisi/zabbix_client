@@ -74,11 +74,11 @@ class GetRecord implements IOperation, SingletonInterface
                     }
                 }
 
-                return new OperationResult(true, $record);
+                return new OperationResult(true, [[ 'record' => $record ]]);
             }
 
             // TODO: missing message
-            return new OperationResult(true, [false]);
+            return new OperationResult(true, []);
         }
 
         return new OperationResult(false, [], 'Error when executing SQL: [' . $GLOBALS['TYPO3_DB']->sql_error() . ']');

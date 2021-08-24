@@ -51,11 +51,11 @@ class GetSystemInfos implements IOperation, SingletonInterface
         // 'GetExtensionVersion',
         // 'GetFilesystemChecksum',
         // 'HasForbiddenUsers',
-        // 'GetInsecureExtensionList',
-        // 'GetOutdatedExtensionList',
+        'GetInsecureExtensionList',
+        'GetOutdatedExtensionList',
         // 'HasRemainingUpdates',
         // 'HasExtensionUpdate',
-        // 'HasExtensionUpdateList' => 'loaded',
+        'HasExtensionUpdateList' => 'loaded',
         // 'GetProgramVersion',
         // 'GetFeatureValue',
     ];
@@ -95,13 +95,13 @@ class GetSystemInfos implements IOperation, SingletonInterface
                 $method = GeneralUtility::makeInstance('WapplerSystems\\ZabbixClient\\Operation\\'.$methodName);
 
                 if(!empty($method)) {
-                    $resultArray[$methodName] = $method->execute($methodParams)->toArray();
+                    $resultArray[$methodName] = [$method->execute($methodParams)->toArray()];
                 }
             }
 
             // TODO: log: methodname not available
         }
 
-        return new OperationResult(true, $resultArray);
+        return new OperationResult(true, [$resultArray]);
     }
 }

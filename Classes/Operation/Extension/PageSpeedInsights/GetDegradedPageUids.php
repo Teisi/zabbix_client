@@ -45,7 +45,7 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
 
         $uids = self::getDegradedPageIds($parameter['field'],$parameter['strategy']);
 
-        return new OperationResult(false, [implode(',', $uids)]);
+        return new OperationResult(false, [[ 'data' => implode(',', $uids) ]]);
     }
 
 

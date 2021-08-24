@@ -62,17 +62,17 @@ class HasSecurityUpdate implements IOperation, SingletonInterface
                     $content = json_decode($response->getBody()->getContents(), true);
 
                     if(version_compare($currentTypo3Version, $content['version'])) {
-                        return new OperationResult(true, [true], 'Security update available ('.$content['version'].')');
+                        return new OperationResult(true, [[ 'bool' => true ]], 'Security update available ('.$content['version'].')');
                     }
 
-                    return new OperationResult(true, [false], 'No security update available.');
+                    return new OperationResult(true, [[ 'bool' => false ]], 'No security update available.');
                 }
             }
         } catch (\Throwable $th) {
             // TODO: log this
             // TODO: return proper error message
             //throw $th;
-            return new OperationResult(false, [$th], 'Error retrieving the patch releases!');
+            return new OperationResult(false, [[ 'exception' => $th ]], 'Error retrieving the patch releases!');
         }
 
         return new OperationResult(false, [], 'Error retrieving the patch releases!');

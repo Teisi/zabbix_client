@@ -46,6 +46,6 @@ class HasDeprecationLogEnabled implements IOperation, SingletonInterface
             }
         }
 
-        return new OperationResult(true, [count($levels) > 0]);
+        return new OperationResult(true, [[ 'data' => count($levels) > 0 ]]);
     }
 }

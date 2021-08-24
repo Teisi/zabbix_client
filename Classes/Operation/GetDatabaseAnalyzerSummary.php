@@ -63,7 +63,7 @@ class GetDatabaseAnalyzerSummary implements IOperation, SingletonInterface
                 $values[] = 'DropField';
             }
 
-            return new OperationResult(true, [implode(',', $values)]);
+            return new OperationResult(true, [[ 'data' => implode(',', $values) ]]);
 
         } catch (StatementException $e) {
             // Ignore

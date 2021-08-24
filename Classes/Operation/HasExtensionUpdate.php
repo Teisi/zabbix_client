@@ -31,7 +31,6 @@ class HasExtensionUpdate implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-
         if (!isset($parameter['extensionKey'])) {
             // throw new InvalidArgumentException('no extensionKey set');
             return new OperationResult(false, [], 'Param \'extensionKey\' not set!');
@@ -52,7 +51,7 @@ class HasExtensionUpdate implements IOperation, SingletonInterface
         $extensionInformation = $listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 
         if (isset($extensionInformation[$extensionKey]['updateAvailable'])) {
-            return new OperationResult(true, [(boolean)$extensionInformation[$extensionKey]['updateAvailable']]);
+            return new OperationResult(true, [[ 'data' =>  (boolean)$extensionInformation[$extensionKey]['updateAvailable'] ]]);
         }
 
         // TODO: return proper error message

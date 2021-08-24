@@ -129,6 +129,10 @@ class GetLogResults implements IOperation, SingletonInterface
             $log = $queryBuilder->execute()->rowCount();
         }
 
-        return new OperationResult(true, [$log]);
+        if($log < 1) {
+            return new OperationResult(true);
+        }
+
+        return new OperationResult(true, [[ 'logs' => $log ]]);
     }
 }

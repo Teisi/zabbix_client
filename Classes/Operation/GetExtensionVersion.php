@@ -29,8 +29,13 @@ class GetExtensionVersion implements IOperation, SingletonInterface
      */
     public function execute($parameter = [])
     {
-        if (!isset($parameter['extensionKey']) || $parameter['extensionKey'] === '') {
-            throw new InvalidArgumentException('no extensionKey set');
+        if (!isset($parameter['extensionKey'])) {
+            // throw new InvalidArgumentException('no extensionKey set');
+            return new OperationResult(false, [], 'No extensionKey set!');
+        }
+
+        if($parameter['extensionKey'] === '') {
+            return new OperationResult(false, [], 'ExtensionKey empty!');
         }
 
         $extensionKey = $parameter['extensionKey'];
@@ -42,7 +47,7 @@ class GetExtensionVersion implements IOperation, SingletonInterface
         @include(ExtensionManagementUtility::extPath($extensionKey, 'ext_emconf.php'));
 
         if (is_array($EM_CONF[$extensionKey])) {
-            return new OperationResult(true, $EM_CONF[$extensionKey]['version']);
+            return new OperationResult(true, [[ 'version' => $EM_CONF[$extensionKey]['version'] ]]);
         }
         return new OperationResult(false, [], 'Cannot read EM_CONF for extension [' . $extensionKey . ']');
     }

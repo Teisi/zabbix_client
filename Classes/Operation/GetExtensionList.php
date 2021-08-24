@@ -58,7 +58,12 @@ class GetExtensionList implements IOperation, SingletonInterface
                 }
             }
 
-            return new OperationResult(true, $extensionList);
+            $returnArray = [];
+            foreach ($extensionList as $extension => $value) {
+                $returnArray[$extension] = [$value];
+            }
+
+            return new OperationResult(true, [ $returnArray ]);
         }
 
         return new OperationResult(false, [], 'No extension locations given');
@@ -70,7 +75,7 @@ class GetExtensionList implements IOperation, SingletonInterface
      * @param string $scope
      * @return string
      */
-    protected function getPathForScope($scope)
+    protected function getPathForScope(string $scope): string
     {
         switch ($scope) {
             case 'system':
@@ -97,9 +102,10 @@ class GetExtensionList implements IOperation, SingletonInterface
      * Get the list of extensions in the given scope
      *
      * @param string $scope
+     * @param bool $withUpdateInfo
      * @return array
      */
-    protected function getExtensionListForScope($scope, $withUpdateInfo = false)
+    protected function getExtensionListForScope(string $scope, bool $withUpdateInfo = false): array
     {
         $path = $this->getPathForScope($scope);
         $extensionInfo = [];
