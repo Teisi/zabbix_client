@@ -1,14 +1,15 @@
 # TYPO3 extension zabbix_client
+## No longer compatible with the original extension https://github.com/svewap/zabbix_client
 
 This is a Zabbix client extension for TYPO3.
 
-Whether 1 or 1000 TYPO3 systems. Keep an eye on them all and offer your customers to 
+Whether 1 or 1000 TYPO3 systems. Keep an eye on them all and offer your customers to
 keep them up to date. This allows errors and security gaps to be detected early before they become a real problem.
 
-Feel free to set your own alarms and parameters in Zabbix. This gives you complete control over the process and 
+Feel free to set your own alarms and parameters in Zabbix. This gives you complete control over the process and
 allows you to add other systems to your monitoring.
 
-This extension allows a deeper scan. In combination with a superficial scan, a system scan and other scans such 
+This extension allows a deeper scan. In combination with a superficial scan, a system scan and other scans such
 as Lighthouse tests, a system can be fully observed.
 
 Further information can be found in the documentation.
