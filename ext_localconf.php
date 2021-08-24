@@ -62,10 +62,6 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['WapplerSystems']['ZabbixClient']['Middleware
     ],
 ];
 
-if (version_compare(TYPO3_version, '9.0.0', '<') && version_compare(TYPO3_version, '7.4.0', '>=')) {
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['zabbixclient'] = \WapplerSystems\ZabbixClient\Middleware\Eid::class . '::processRequest';
-}
-
 // Register sys_log and sys_history table in table garbage collection task
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_zabbixclient_domain_model_felog'] ?? false)) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']['tx_zabbixclient_domain_model_felog'] = [

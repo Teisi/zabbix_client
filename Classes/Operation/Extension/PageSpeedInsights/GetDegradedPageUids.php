@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WapplerSystems\ZabbixClient\Operation\Extension\PageSpeedInsights;
 
@@ -29,7 +30,7 @@ class GetDegradedPageUids implements IOperation, SingletonInterface
      * @param array $parameter None
      * @return OperationResult The extension version
      */
-    public function execute($parameter = [])
+    public function execute(array $parameter = []): OperationResult
     {
         if (!ExtensionManagementUtility::isLoaded('pagespeedinsights')) {
             return new OperationResult(false, [], 'EXT:pagespeedinsights not loaded!');
