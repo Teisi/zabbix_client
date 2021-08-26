@@ -22,20 +22,6 @@ class Log404 implements MiddlewareInterface
     protected $persistenceManager;
 
     /**
-     * @param \WapplerSystems\ZabbixClient\Domain\Repository\FeLogRepository
-     */
-    public function injectFeLogRepository(\WapplerSystems\ZabbixClient\Domain\Repository\FeLogRepository $feLogRepository) {
-        $this->feLogRepository = $feLogRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     */
-    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager) {
-        $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Server\RequestHandlerInterface $handler
      *
@@ -60,6 +46,13 @@ class Log404 implements MiddlewareInterface
             $newLog->setError(404);
             $newLog->setLogMessage($statusCode . ' ' .  $reasonPhrase);
             $newLog->setLogData($logDataJson);
+
+            // get FeLogRepository
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            $this->feLogRepository = $objectManager->get(\WapplerSystems\ZabbixClient\Domain\Repository\FeLogRepository::class);
+            // get PersistenceManager
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            $this->persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
 
             $this->feLogRepository->add($newLog);
 
